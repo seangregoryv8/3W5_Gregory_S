@@ -1,14 +1,27 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Cube</title>
+</head>
 <body>
 
 <canvas
+    id = "main"
+    tabindex="1"
+    style="border:0px solid #000000;">
+</canvas>
+<canvas
+    id = "mini"
     tabindex="1"
     style="border:0px solid #000000;">
 </canvas>
 
-<script src="character.js"></script>
+<script src="minimap.js"></script>
 <script src="room.js"></script>
+<script src="character.js"></script>
 <script src="main.js"></script>
 
 <p id="artifact">
