@@ -1,18 +1,18 @@
-const w = 25, h = 100, c = 300;
+const width = 25, height = 100, distance = 300, minSpace = 50, maxSpace = 600;
+var randomArtifactAmount = parseInt(Math.random() * (4 - 2) + 2);
+
 class Room {
     constructor(border, red, green, blue) {
         this.borderColor = border,
+        //Random colors
         this.roomColor = {red: red, green: green, blue: blue}
         this.walls = [];
-        this.entrances = [];
         this.artifacts = [];
         for (let i = 0; i < 4; i++)
-        {
-            this.walls[i] = new Wall(roomdirections[i]);
-            this.entrances = new Enter(this.walls[i].x, this.walls[i].y, false);
-        }
-        this.artifacts[0] = new Artifact(50, 100);
-        this.artifacts[1] = new Artifact(300, 400);
+            this.walls[i] = new Wall(roomdirections[i], "Red");
+        for (let i = 0; i < randomArtifactAmount; i++)
+            this.artifacts[i] = new Artifact(randomInt(50, 600), randomInt(50, 600))
+        console.log(this.artifacts);
     }
     draw = () => {
         context.fillStyle = 
@@ -20,14 +20,14 @@ class Room {
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.beginPath();
         context.fillStyle = this.borderColor;
-        context.fillRect(0, 0, w, c);
-        context.fillRect(0, 0, c, w);
-        context.fillRect(0, canvas.height - c, w, c);
-        context.fillRect(0, canvas.height - w, c, w);
-        context.fillRect(canvas.height - w, 0, w, c);
-        context.fillRect(canvas.height - c, 0, c, w);
-        context.fillRect(canvas.height - w, canvas.height - c, w, c);
-        context.fillRect(canvas.height - c, canvas.height - w, c, w);
+        context.fillRect(0, 0, width, distance);
+        context.fillRect(0, 0, distance, width);
+        context.fillRect(0, canvas.height - distance, width, distance);
+        context.fillRect(0, canvas.height - width, distance, width);
+        context.fillRect(canvas.height - width, 0, width, distance);
+        context.fillRect(canvas.height - distance, 0, distance, width);
+        context.fillRect(canvas.height - width, canvas.height - distance, width, distance);
+        context.fillRect(canvas.height - distance, canvas.height - width, distance, width);
         for (let i = 0; i < this.walls.length; i++)
             this.walls[i].draw();
         for (let i = 0; i < this.artifacts.length; i++)
@@ -38,20 +38,33 @@ class Wall {
     constructor(direction, color) {
         this.direction = direction;
         this.color = color;
+        this.enter = false;
+        this.animation = false;
+        this.animationMovement = distance;
     }
     draw = () => {
-        context.fillStyle = "Red";
+        context.fillStyle = this.color;
         if (this.direction == "top")
-            context.fillRect(c, 0, h, w)
+        {
+            if (character.y == minSpace && room1.walls[0].enter && this.animationMovement > distance - 100)
+                if (character.x > distance + character.radius && character.x < character.radius * 3)
+                this.animationMovement--;
+            context.fillRect(this.animationMovement, 0, height, width);
+        }
         else if (this.direction == "left")
-            context.fillRect(0, c, w, h);
+            context.fillRect(0, distance, width, height);
         else if (this.direction == "right")
-            context.fillRect(canvas.width - w, c, w, h)
+            context.fillRect(canvas.width - width, distance, width, height);
         else if (this.direction == "bottom")
-            context.fillRect(c, canvas.height - w, h, w)
+            context.fillRect(distance, canvas.height - width, height, width);
+        //c--
+    }
+    changeColor = () => {
+        this.color = "Green";
+        this.enter = true;
     }
 }
-class Enter {
+/*class Enter {
     constructor(x, y, walldown) {
         this.x = x;
         this.y = y;
@@ -60,7 +73,7 @@ class Enter {
     draw = () => {
 
     }
-}
+}*/
 class Artifact {
     constructor(x, y) {
         this.x = x;

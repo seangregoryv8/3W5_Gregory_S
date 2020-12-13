@@ -31,10 +31,11 @@ class Character {
     }
     turn(direction, amount){
         this.escapeBoundaries();
+        let mix = amount + this.run;
         if (direction == 0)
-            this.speedX = amount + this.run;
+            this.speedX = mix;
         else
-            this.speedY = amount + this.run
+            this.speedY = mix;
     }
     escapeBoundaries(){
         this.x += (this.x + this.diameter >= canvas.width) ? -2 : (this.x - this.diameter <= 0) ? 2 : 0;
@@ -45,11 +46,10 @@ class Character {
             if ((this.x > artX - artW && this.x < artX + artW) && (this.y > artY - artW && this.y < artY + artW))
             {
                 room1.artifacts.splice(i, i + 1);
+                console.log(room1.artifacts);
                 document.getElementById("artifact").innerHTML = "Artifacts left: " + room1.artifacts.length;
-                let randomRoom = Math.random() * Math.floor(room1.walls.length);
-                console.log(room1.walls.length)
-                console.log(randomRoom);
-                room1.walls.splice(randomRoom, randomRoom + 1);
+                let randomRoom = parseInt(Math.random() * Math.floor(room1.walls.length));
+                room1.walls[randomRoom].changeColor();
             }
         }
     }
