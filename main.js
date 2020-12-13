@@ -4,7 +4,6 @@ canvas.height = 700;
 canvas.width = 700;
 
 const roomdirections = ["top", "left", "right", "bottom"];
-let randomInt = (min, max) => parseInt(Math.random() * (max - min) + min);
 let character = new Character(canvas.width / 2, canvas.height / 2);
 let room1 = new Room("Black", randomInt(1, 256), randomInt(1, 256), randomInt(1, 256));
 

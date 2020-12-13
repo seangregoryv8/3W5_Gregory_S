@@ -44,20 +44,35 @@ class Wall {
     }
     draw = () => {
         context.fillStyle = this.color;
+        let topBottomMin = distance + character.radius, topBottomMax = distance + character.radius * 3;
         if (this.direction == "top")
         {
             if (character.y == minSpace && room1.walls[0].enter && this.animationMovement > distance - 100)
-                if (character.x > distance + character.radius && character.x < character.radius * 3)
-                this.animationMovement--;
+                if (BetweenAnd(character.x, topBottomMin, topBottomMax))
+                    this.animationMovement--;
             context.fillRect(this.animationMovement, 0, height, width);
         }
         else if (this.direction == "left")
-            context.fillRect(0, distance, width, height);
+        {
+            if (character.x == minSpace && room1.walls[1].enter && this.animationMovement > distance - 100)
+                if (BetweenAnd(character.y, topBottomMin, topBottomMax))
+                    this.animationMovement--;
+            context.fillRect(0, this.animationMovement, width, height);
+        }
         else if (this.direction == "right")
-            context.fillRect(canvas.width - width, distance, width, height);
+        {
+            if (character.x == canvas.height - minSpace && room1.walls[2].enter && this.animationMovement > distance - 100)
+                if (BetweenAnd(character.y, topBottomMin, topBottomMax))
+                    this.animationMovement--;
+            context.fillRect(canvas.width - width, this.animationMovement, width, height);
+        }
         else if (this.direction == "bottom")
-            context.fillRect(distance, canvas.height - width, height, width);
-        //c--
+        {
+            if (character.y == canvas.height - minSpace && room1.walls[3].enter && this.animationMovement > distance - 100)
+                if (BetweenAnd(character.x, topBottomMin, topBottomMax))
+                    this.animationMovement--;
+            context.fillRect(this.animationMovement, canvas.height - width, height, width);
+        }
     }
     changeColor = () => {
         this.color = "Green";
