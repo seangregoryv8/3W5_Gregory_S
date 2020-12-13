@@ -4,4 +4,4 @@ let BetweenAnd = (condition, minimum, maximum) => (condition >= minimum && condi
 
 let BetweenOr = (condition, minimum, maximum) => (condition >= minimum || condition <= maximum) ? true : false;
 
-let WallCheck = (endY, wall) => (character.y == endY && room1.walls[wall].enter && this.animationMovement > distance - 100) ? true : false;
+let WallOpen = (beginning, end, wall) => (beginning == end && room1.walls[wall].enter && this.animationMovement > distance - 100) ? true : false

@@ -2,33 +2,14 @@ let canvas = document.getElementById("main");
 let context = canvas.getContext('2d');
 canvas.height = 700;
 canvas.width = 700;
+document.body.style.backgroundColor = 'rgba(233, 210, 153, 0.3)';
 
 const roomdirections = ["top", "left", "right", "bottom"];
 let character = new Character(canvas.width / 2, canvas.height / 2);
 let room1 = new Room("Black", randomInt(1, 256), randomInt(1, 256), randomInt(1, 256));
+let trap = new FlyTrap(400, 25);
 
-class Timer {
-    constructor(minutes, seconds) {
-        this.minutes = minutes;
-        this.seconds = seconds;
-    }
-    draw() {
-        if (this.seconds == -1)
-        {
-            this.minutes--;
-            this.seconds = 59;
-        }
-        let minuteTen = (this.minutes < 10) ? "0" + this.minutes : this.minutes;
-        let secondTen = (this.seconds < 10) ? "0" + this.seconds : this.seconds;
-        document.getElementById("time").innerHTML = "Time left: " +  minuteTen + ":" + secondTen;
-    }
-    countDown = seconds => {
-        this.seconds -= seconds;
-        this.draw();
-    }
-}
 let timer = new Timer(10, 0);
-document.body.style.backgroundColor = 'rgba(233, 210, 153, 0.3)';
 var stopwatch = 0;
 
 document.onkeydown = e => {
@@ -75,6 +56,7 @@ let animate = () => {
     context.clearRect(0, 0, canvas.width, canvas.height);
     room1.draw();
     character.update();
+    trap.draw();
     stopwatch++;
     if (stopwatch % 80 == 0)
         timer.countDown(1);

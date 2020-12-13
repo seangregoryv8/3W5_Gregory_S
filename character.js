@@ -2,8 +2,8 @@ class Character {
     constructor(x, y){
         this.x = x;
         this.y = y;
-        this.radius = 25;
-        this.diameter = 50;
+        this.radius = width;
+        this.diameter = minSpace;
         this.speedX = 0;
         this.speedY = 0;
         this.run = 0;
