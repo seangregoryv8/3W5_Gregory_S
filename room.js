@@ -1,5 +1,6 @@
 const width = 25, height = 100, distance = 300, minSpace = 50, maxSpace = 600;
 var randomArtifactAmount = parseInt(Math.random() * (4 - 2) + 2);
+const roomdirections = ["top", "left", "right", "bottom"];
 
 class Room {
     constructor(border, red, green, blue)
@@ -9,10 +10,15 @@ class Room {
         this.roomColor = {red: red, green: green, blue: blue}
         this.walls = [];
         this.artifacts = [];
+        this.traps = [];
         for (let i = 0; i < 4; i++)
             this.walls[i] = new Wall(roomdirections[i], "Red");
         for (let i = 0; i < randomArtifactAmount; i++)
             this.artifacts[i] = new Artifact(randomInt(50, 600), randomInt(50, 600))
+        this.traps[0] = new FlyTrap(distance + height, width, distance - width, 10, "down");
+        this.traps[1] = new FlyTrap(width, canvas.height - 36, distance - width, 10, "down");
+        this.traps[2] = new FlyTrap(width, width, 10, distance - width, "left");
+        this.traps[3] = new FlyTrap(canvas.width - 36, canvas.width - distance, 10, distance - width, "left");
     }
     draw()
     {
@@ -33,5 +39,12 @@ class Room {
             this.walls[i].draw();
         for (let i = 0; i < this.artifacts.length; i++)
             this.artifacts[i].draw();
+        for (let i = 0; i < this.traps.length; i++)
+            this.traps[i].draw();
+    }
+    hurt()
+    {
+        context.fillStyle = "Red";
+        context.fillRect(0, 0, canvas.width, canvas.height);
     }
 }

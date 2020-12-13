@@ -1,5 +1,7 @@
-class Character {
-    constructor(x, y){
+class Character
+{
+    constructor(x, y)
+    {
         this.x = x;
         this.y = y;
         this.radius = width;
@@ -9,7 +11,8 @@ class Character {
         this.run = 0;
         this.rotation = 0;
     }
-    draw(){
+    draw()
+    {
         context.save();
         context.translate(this.x, this.y);
         context.rotate(this.rotation * Math.PI / 180);
@@ -19,7 +22,8 @@ class Character {
         context.fill();
         context.restore();
     }
-    update(){
+    update()
+    {
         if (this.x + this.diameter >= canvas.width || this.x - this.diameter <= 0 || this.y + this.diameter >= canvas.height || this.y - this.diameter <= 0)
             this.speedX = 0;
         else
@@ -29,7 +33,8 @@ class Character {
         }
         this.draw();
     }
-    turn(direction, amount){
+    turn(direction, amount)
+    {
         this.escapeBoundaries();
         let mix = amount + this.run;
         if (direction == 0)
@@ -37,7 +42,8 @@ class Character {
         else
             this.speedY = mix;
     }
-    escapeBoundaries(){
+    escapeBoundaries()
+    {
         this.x += (this.x + this.diameter >= canvas.width) ? -2 : (this.x - this.diameter <= 0) ? 2 : 0;
         this.y += (this.y + this.diameter >= canvas.height) ? -2 : (this.y - this.diameter <= 0) ? 2 : 0;
         for (let i = 0; i < room1.artifacts.length; i++)

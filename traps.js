@@ -1,20 +1,39 @@
 class FlyTrap {
-    constructor(x, y) {
+    constructor(x, y, width, height, direction) {
         this.x = x;
         this.y = y;
+        this.width = width;
+        this.height = height;
         this.activate = false;
+        this.direction = direction;
     }
     draw()
     {
-        let movement = this.y;
         context.fillStyle = "DarkRed"
-        if (character.x > this.x + 150 )
-            this.activate = true;
-        if (this.activate)
+        if (this.direction == "down")
         {
-            console.log("HI");
-            movement++;
+            this.y++;
+            if (this.y == canvas.width - 35)
+                this.direction = "up";
         }
-        context.fillRect(this.x, movement, 275, 10);
+        else if (this.direction == "up")
+        {
+            this.y--;
+            if (this.y == 25)
+                this.direction = "down";
+        }
+        else if (this.direction == "left")
+        {
+            this.x++;
+            if (this.x + this.width == canvas.width - 25)
+                this.direction = "right"
+        }
+        else if (this.direction == "right")
+        {
+            this.x--;
+            if (this.x == 24)
+                this.direction = "left"
+        }
+        context.fillRect(this.x, this.y, this.width, this.height);
     }
 }

@@ -4,10 +4,8 @@ canvas.height = 700;
 canvas.width = 700;
 document.body.style.backgroundColor = 'rgba(233, 210, 153, 0.3)';
 
-const roomdirections = ["top", "left", "right", "bottom"];
 let character = new Character(canvas.width / 2, canvas.height / 2);
 let room1 = new Room("Black", randomInt(1, 256), randomInt(1, 256), randomInt(1, 256));
-let trap = new FlyTrap(400, 25);
 
 let timer = new Timer(10, 0);
 var stopwatch = 0;
@@ -56,7 +54,6 @@ let animate = () => {
     context.clearRect(0, 0, canvas.width, canvas.height);
     room1.draw();
     character.update();
-    trap.draw();
     stopwatch++;
     if (stopwatch % 80 == 0)
         timer.countDown(1);
