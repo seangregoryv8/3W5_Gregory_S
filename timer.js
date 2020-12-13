@@ -1,4 +1,3 @@
-// Timer class: Makes the 10 minute timer at the beginning, plus additional times.
 class Timer {
     constructor(minutes, seconds) {
         this.minutes = minutes;

@@ -2,10 +2,10 @@ let canvas = document.getElementById("main");
 let context = canvas.getContext('2d');
 canvas.height = 700;
 canvas.width = 700;
-document.body.style.backgroundColor = 'rgba(233, 210, 153, 0.3)';
-
 let character = new Character(canvas.width / 2, canvas.height / 2);
-let room1 = new Room("Black", randomInt(1, 256), randomInt(1, 256), randomInt(1, 256));
+let r = randomInt(1, colorMax), g = randomInt(1, colorMax), b = randomInt(1, colorMax);
+let room1 = new Room("Black", r, g, b);
+document.body.style.backgroundColor = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.3)';
 
 let timer = new Timer(10, 0);
 var stopwatch = 0;
@@ -55,7 +55,7 @@ let animate = () => {
     room1.draw();
     character.update();
     stopwatch++;
-    if (stopwatch % 80 == 0)
+    if (stopwatch % fullSecond == 0)
         timer.countDown(1);
 }
 animate();

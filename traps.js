@@ -13,25 +13,25 @@ class FlyTrap {
         if (this.direction == "down")
         {
             this.y++;
-            if (this.y == canvas.width - 35)
+            if (this.y == canvas.width - width - 10)
                 this.direction = "up";
         }
         else if (this.direction == "up")
         {
             this.y--;
-            if (this.y == 25)
+            if (this.y == width)
                 this.direction = "down";
         }
         else if (this.direction == "left")
         {
             this.x++;
-            if (this.x + this.width == canvas.width - 25)
+            if (this.x + this.width == canvas.width - width)
                 this.direction = "right"
         }
         else if (this.direction == "right")
         {
             this.x--;
-            if (this.x == 24)
+            if (this.x == width)
                 this.direction = "left"
         }
         context.fillRect(this.x, this.y, this.width, this.height);

@@ -15,7 +15,7 @@ class Character
     {
         context.save();
         context.translate(this.x, this.y);
-        context.rotate(this.rotation * Math.PI / 180);
+        context.rotate(this.rotation * Math.PI / fullDegrees);
         context.beginPath();
         context.fillStyle = "Purple";
         context.arc(0, 0, this.radius, 0, 2 * Math.PI);

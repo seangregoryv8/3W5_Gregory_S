@@ -1,7 +1,3 @@
-const width = 25, height = 100, distance = 300, minSpace = 50, maxSpace = 600;
-var randomArtifactAmount = parseInt(Math.random() * (4 - 2) + 2);
-const roomdirections = ["top", "left", "right", "bottom"];
-
 class Room {
     constructor(border, red, green, blue)
     {
@@ -18,7 +14,7 @@ class Room {
         this.traps[0] = new FlyTrap(distance + height, width, distance - width, 10, "down");
         this.traps[1] = new FlyTrap(width, canvas.height - 36, distance - width, 10, "down");
         this.traps[2] = new FlyTrap(width, width, 10, distance - width, "left");
-        this.traps[3] = new FlyTrap(canvas.width - 36, canvas.width - distance, 10, distance - width, "left");
+        this.traps[3] = new FlyTrap(canvas.width - 36, canvas.width - distance, 10, distance - width, "right");
     }
     draw()
     {

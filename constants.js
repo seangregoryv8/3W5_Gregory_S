@@ -1,0 +1,10 @@
+const width = 25;
+const height = 100;
+const distance = 300;
+const minSpace = 50;
+const maxSpace = 600;
+const roomdirections = ["top", "left", "right", "bottom"];
+const randomArtifactAmount = parseInt(Math.random() * (4 - 2) + 2);
+const fullDegrees = 180;
+const fullSecond = 80;
+const colorMax = 256;
