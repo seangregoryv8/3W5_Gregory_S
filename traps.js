@@ -1,5 +1,7 @@
-class FlyTrap {
-    constructor(x, y, width, height, direction) {
+class FlyTrap
+{
+    constructor(x, y, width, height, direction)
+    {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -7,6 +9,7 @@ class FlyTrap {
         this.activate = false;
         this.direction = direction;
     }
+    //Ball with bouncing physics with same hurting capabilities as the lines.
     draw()
     {
         context.fillStyle = "DarkRed"
@@ -35,5 +38,35 @@ class FlyTrap {
                 this.direction = "left"
         }
         context.fillRect(this.x, this.y, this.width, this.height);
+    }
+}
+
+class BallTrap
+{
+    constructor(x, y, radius)
+    {
+        this.x = x;
+        this.y = y;
+        this.radius = radius
+        this.speedX = randomInt(1, 6);
+        this.speedY = randomInt(1, 6);
+    }
+    draw()
+    {
+        context.fillStyle = "Dark Red";
+        context.beginPath();
+        context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+        context.closePath();
+        context.stroke();
+    }
+    update()
+    {
+        if (this.x + minSpace > canvas.width || this.x < minSpace)
+            this.speedX *= -1.01;
+        if (this.y + minSpace > canvas.height || this.y < minSpace)
+            this.speedY *= -1;
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.draw();
     }
 }

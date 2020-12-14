@@ -60,20 +60,8 @@ class Character
             }
         }
     }
-    enterLeft()
-    {
-        this.x = canvas.height - minSpace;
-    }
-    enterRight()
-    {
-        this.x = minSpace;
-    }
-    enterDown()
-    {
-        this.y = minSpace;
-    }
-    enterUp()
-    {
-        this.y = canvas.height - minSpace;
-    }
+    enterLeft() { this.x = canvas.height - minSpace; }
+    enterRight() { this.x = minSpace; }
+    enterDown() { this.y = minSpace; }
+    enterUp() { this.y = canvas.height - minSpace; }
 }

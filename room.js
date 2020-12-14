@@ -1,36 +1,40 @@
 class Room {
-    constructor(border, red, green, blue)
+    constructor(trap)
     {
-        this.borderColor = border;
+        this.borderColor = "Black";
         this.complete = false;
-        //Random colors
-        this.roomColor = {red: red, green: green, blue: blue};
         this.walls = [];
         this.artifacts = [];
-        this.traps = [];
+        this.trap = trap;
         for (let i = 0; i < 4; i++)
             this.walls[i] = new Wall(roomdirections[i], "Red");
-            
         for (let i = 0; i < randomArtifactAmount; i++)
-            this.artifacts[i] = new Artifact(randomInt(50, 600), randomInt(50, 600))
-        this.traps[0] = new FlyTrap(distance + height, width, distance - width, 10, "down");
-        this.traps[1] = new FlyTrap(width, canvas.height - 36, distance - width, 10, "down");
-        this.traps[2] = new FlyTrap(width, width, 10, distance - width, "left");
-        this.traps[3] = new FlyTrap(canvas.width - 36, canvas.width - distance, 10, distance - width, "right");
+            this.artifacts[i] = new Artifact(randomInt(minSpace, maxSpace), randomInt(50, 600))
+        if (this.trap == "Fly")
+        {
+            this.flyTraps = [];
+            this.flyTraps[0] = new FlyTrap(distance + height, width, distance - width, 10, "down");
+            this.flyTraps[1] = new FlyTrap(width, canvas.height - 36, distance - width, 10, "down");
+            this.flyTraps[2] = new FlyTrap(width, width, 10, distance - width, "left");
+            this.flyTraps[3] = new FlyTrap(canvas.width - 36, canvas.width - distance, 10, distance - width, "right");
+        }
+        else if (this.trap == "Ball")
+            this.ballTraps = new BallTrap(50, 50, 30);
     }
     draw()
     {
-        //if (this.complete)
-        if (this.Hit(character.y, this.traps[0].y) && character.x - character.radius >= canvas.width - (distance + minSpace))
-            character.gotHurt = true;
-        if (this.Hit(character.y, this.traps[1].y) && character.x - character.radius <= distance)
-            character.gotHurt = true;
-        if (this.Hit(character.x, this.traps[2].x) && character.y - character.radius <= distance)
-            character.gotHurt = true;
-        if (this.Hit(character.x, this.traps[3].x) && character.y - character.radius >= canvas.width - (distance + minSpace))
-            character.gotHurt = true;
-        context.fillStyle = 
-        'rgba(' + this.roomColor.red + ', ' + this.roomColor.green + ', ' + this.roomColor.blue + ', 0)';
+        if (this.trap == "Fly")
+        {
+            if (this.Hit(character.y, this.flyTraps[0].y) && character.x - character.radius >= canvas.width - (distance + minSpace))
+                character.gotHurt = true;
+            if (this.Hit(character.y, this.flyTraps[1].y) && character.x - character.radius <= distance)
+                character.gotHurt = true;
+            if (this.Hit(character.x, this.flyTraps[2].x) && character.y - character.radius <= distance)
+                character.gotHurt = true;
+            if (this.Hit(character.x, this.flyTraps[3].x) && character.y - character.radius >= canvas.width - (distance + minSpace))
+                character.gotHurt = true;
+        }
+        context.fillStyle = 'rgba(0, 0, 0, 0)';
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.beginPath();
         context.fillStyle = this.borderColor;
@@ -44,11 +48,17 @@ class Room {
         context.fillRect(canvas.height - distance, canvas.height - width, distance, width);
         for (let i = 0; i < this.walls.length; i++)
             this.walls[i].draw();
-        for (let i = 0; i < this.artifacts.length; i++)
-            this.artifacts[i].draw();
-        for (let i = 0; i < this.traps.length; i++)
-            this.traps[i].draw();
-        this.CharacterHurt();
+        if (!this.complete)
+        {
+            for (let i = 0; i < this.artifacts.length; i++)
+                this.artifacts[i].draw();
+            if (this.trap == "Fly")
+                for (let i = 0; i < this.flyTraps.length; i++)
+                    this.flyTraps[i].draw();
+            else if (this.trap == "Ball")
+                this.ballTraps.update();
+            this.CharacterHurt();
+        }
     }
     Hit = (point, trap) => (point + character.radius >= trap && point + character.radius <= trap + 55) ? true : false
     CharacterHurt()
