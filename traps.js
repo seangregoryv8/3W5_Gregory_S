@@ -53,11 +53,11 @@ class BallTrap
     }
     draw()
     {
-        context.fillStyle = "Dark Red";
+        context.fillStyle = "DarkRed";
         context.beginPath();
         context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
         context.closePath();
-        context.stroke();
+        context.fill();
     }
     update()
     {

@@ -19,7 +19,7 @@ class Room {
             this.flyTraps[3] = new FlyTrap(canvas.width - 36, canvas.width - distance, 10, distance - width, "right");
         }
         else if (this.trap == "Ball")
-            this.ballTraps = new BallTrap(randomInt(minSpace, maxSpace), randomInt(minSpace, maxSpace), 30);
+            this.ballTraps = new BallTrap(randomInt(minSpace, maxSpace), randomInt(minSpace, maxSpace), width);
     }
     draw()
     {
@@ -33,6 +33,12 @@ class Room {
                 character.gotHurt = true;
             if (this.Hit(character.x, this.flyTraps[3].x) && character.y - character.radius >= canvas.width - (distance + minSpace))
                 character.gotHurt = true;
+        }
+        else if (this.trap = "Ball")
+        {
+            if (parseInt(this.ballTraps.x) - this.ballTraps.radius <= character.x + character.radius && parseInt(this.ballTraps.x) + this.ballTraps.radius >= character.x - character.radius)
+                if (parseInt(this.ballTraps.y) - this.ballTraps.radius <= character.y + character.radius && parseInt(this.ballTraps.y) + this.ballTraps.radius >= character.y - character.radius)
+                    character.gotHurt = true;
         }
         context.fillStyle = 'rgba(0, 0, 0, 0)';
         context.fillRect(0, 0, canvas.width, canvas.height);
