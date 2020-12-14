@@ -27,7 +27,7 @@ class Room {
         // Will make the previous wall you entered from passable
             for (let i = 0; i < this.walls.length; i++)
                 if (this.walls[i].direction == previousRoomWall)
-                    this.walls[i].enter = true;
+                    this.walls[i].changeColor();
         if (this.trap == "Fly")
         {
             let oppDistance = canvas.width - (distance + minSpace)
@@ -40,8 +40,8 @@ class Room {
             if (this.Hit(character.x, this.flyTraps[3].x) && character.y - character.radius >= oppDistance)
                 character.GotHurt();
         }
-        else if (this.trap = "Ball" && this.ballTraps.CheckForDamage())
-            character.GotHurt();
+        else if (this.trap == "Ball")
+            this.ballTraps.CheckForDamage();
         context.fillStyle = 'rgba(0, 0, 0, 0)';
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.beginPath();

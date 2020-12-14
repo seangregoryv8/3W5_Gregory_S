@@ -14,5 +14,5 @@ class Artifact
     }
     Collect = () =>
         (character.x + character.radius > this.x && character.x - character.radius < this.x + this.side) ? 
-        (character.y + character.radius > this.y && character.y - character.radius < this.y + this.side) ? true : false : false
+        (character.y + character.radius > this.y && character.y - character.radius < this.y + this.side) ? true : false : false;
 }

@@ -69,6 +69,10 @@ class BallTrap
         this.y += this.speedY;
         this.draw();
     }
-    CheckForDamage = () => (parseInt(this.x - this.radius) <= character.x + character.radius && parseInt(this.x) + this.radius >= character.x - character.radius) ? 
-        (parseInt(this.y - this.radius) <= character.y + character.radius && parseInt(this.y) + this.radius >= character.y - character.radius) ? true : false : false;
+    CheckForDamage()
+    {
+        if (parseInt(this.x - this.radius) <= character.x + character.radius && parseInt(this.x) + this.radius >= character.x - character.radius)
+            if (parseInt(this.y - this.radius) <= character.y + character.radius && parseInt(this.y) + this.radius >= character.y - character.radius)
+                character.GotHurt();
+    }
 }

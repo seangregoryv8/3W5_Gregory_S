@@ -2,6 +2,7 @@ let canvas = document.getElementById("main");
 let context = canvas.getContext('2d');
 canvas.height = 700;
 canvas.width = 700;
+canvas.textAlign = "center";
 
 let rooms = [];
 rooms[0] = new Room("Ball");

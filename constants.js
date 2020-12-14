@@ -6,6 +6,7 @@ const maxSpace = 600;
 const fullDegrees = 180;
 const colorMax = 256;
 // Universal variables
+var collectedArtifacts = 0;
 const roomDirections = ["up", "left", "right", "down"];
 const trapDirections = ["down", "up", "left", "right"];
 

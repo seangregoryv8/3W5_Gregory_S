@@ -7,12 +7,12 @@
     <title>Cube</title>
 </head>
 <body>
-
-<canvas
+<div id="canvas-container">
+    <canvas
     id = "main"
     tabindex="1"
-    style="border:0px solid #000000;">
-</canvas>
+    style="border:0px solid #000000;"></canvas>
+</div>
 <canvas
     id = "mini"
     tabindex="1"
@@ -33,8 +33,9 @@
 <script src="character.js"></script>
 <!-- Must always come last -->
 <script src="main.js"></script>
-
-<p id="artifact">Artifacts left: </p>
-<p id="time">Time left: 10:00</p>
+<div id="text">
+    <p id="artifact">Number of Artifacts: 0</p>
+    <p id="time">Time left: 10:00</p>
+</div>
 </body>
 </html>

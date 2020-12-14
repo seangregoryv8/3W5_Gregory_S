@@ -35,22 +35,26 @@ class Wall {
             {
                 case roomDirections[1]:
                     character.enterLeft();
-                    previousRoomWall = 2;
+                    previousRoomWall = roomDirections[2];
                     break;
                 case roomDirections[2]:
                     character.enterRight();
-                    previousRoomWall = 1;
+                    previousRoomWall = roomDirections[1];
                     break;
                 case roomDirections[3]:
                     character.enterDown();
-                    previousRoomWall = 0;
+                    previousRoomWall = roomDirections[0];
                     break;
                 case roomDirections[0]:
                     character.enterUp();
-                    previousRoomWall = 3;
+                    previousRoomWall = roomDirections[3];
                     break;
             }
+            // Sets the new respawn point
+            respawnPointX = character.x;
+            respawnPointY = character.y;
             this.animationMovement = distance;
+            //Sets the new room to complete
             rooms[currentRoom].complete = true;
             needToRedraw = true;
         }

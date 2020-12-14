@@ -51,7 +51,8 @@ class Character
             if (rooms[currentRoom].artifacts[i].Collect())
             {
                 rooms[currentRoom].artifacts.splice(i, 1);
-                document.getElementById("artifact").innerHTML = "Artifacts left: " + rooms[currentRoom].artifacts.length;
+                collectedArtifacts++;
+                document.getElementById("artifact").innerHTML = "Number of Artifacts: " + collectedArtifacts;
                 let randomRoom = parseInt(Math.random() * Math.floor(rooms[currentRoom].walls.length));
                 rooms[currentRoom].walls[randomRoom].changeColor();
             }
