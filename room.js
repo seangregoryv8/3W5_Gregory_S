@@ -19,7 +19,7 @@ class Room {
             this.flyTraps[3] = new FlyTrap(canvas.width - 36, canvas.width - distance, 10, distance - width, "right");
         }
         else if (this.trap == "Ball")
-            this.ballTraps = new BallTrap(50, 50, 30);
+            this.ballTraps = new BallTrap(randomInt(minSpace, maxSpace), randomInt(minSpace, maxSpace), 30);
     }
     draw()
     {

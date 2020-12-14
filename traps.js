@@ -61,9 +61,9 @@ class BallTrap
     }
     update()
     {
-        if (this.x + minSpace > canvas.width || this.x < minSpace)
+        if (this.x + minSpace + 5 > canvas.width || this.x < minSpace)
             this.speedX *= -1.01;
-        if (this.y + minSpace > canvas.height || this.y < minSpace)
+        if (this.y + minSpace + 5 > canvas.height || this.y < minSpace)
             this.speedY *= -1;
         this.x += this.speedX;
         this.y += this.speedY;
