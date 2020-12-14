@@ -10,6 +10,7 @@ class Character
         this.speedY = 0;
         this.run = 0;
         this.rotation = 0;
+        this.gotHurt = false;
     }
     draw()
     {
@@ -58,5 +59,21 @@ class Character
                 room1.walls[randomRoom].changeColor();
             }
         }
+    }
+    enterLeft()
+    {
+        this.x = canvas.height - minSpace;
+    }
+    enterRight()
+    {
+        this.x = minSpace;
+    }
+    enterDown()
+    {
+        this.y = minSpace;
+    }
+    enterUp()
+    {
+        this.y = canvas.height - minSpace;
     }
 }

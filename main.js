@@ -5,6 +5,8 @@ canvas.width = 700;
 let character = new Character(canvas.width / 2, canvas.height / 2);
 let r = randomInt(1, colorMax), g = randomInt(1, colorMax), b = randomInt(1, colorMax);
 let room1 = new Room("Black", r, g, b);
+r = randomInt(1, colorMax), g = randomInt(1, colorMax), b = randomInt(1, colorMax);
+let room2 = new Room("Black", r, g, b);
 document.body.style.backgroundColor = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.3)';
 
 let timer = new Timer(10, 0);
