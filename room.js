@@ -25,7 +25,7 @@ class Room {
     {
         // Will make the previous wall you entered from passable
             for (let i = 0; i < this.walls.length; i++)
-                if (this.walls[i].direction == roomDirections[previousRoomWall])
+                if (this.walls[i].direction == previousRoomWall)
                     this.walls[i].enter = true;
         if (this.trap == "Fly")
         {

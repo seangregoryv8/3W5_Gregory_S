@@ -1,11 +1,11 @@
 class FlyTrap
 {
-    constructor(x, y, direction)
+    constructor(x, y, width, height, direction)
     {
         this.x = x;
         this.y = y;
-        this.width = (this.direction == roomDirections[0] || this.direction == roomDirections[3]) ? distance - width : 10;
-        this.height = (this.direction == roomDirections[0] || this.direction == roomDirections[3]) ? 10 : distance - width;
+        this.width = width;
+        this.height = height;
         this.activate = false;
         this.direction = direction;
     }
@@ -30,6 +30,7 @@ class FlyTrap
                 if (this.x == width)
                     this.direction = roomDirections[1];
                 break;
+            
             case roomDirections[3]:
                 this.y++;
                 if (this.y == canvas.width - width - 10)
