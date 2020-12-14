@@ -1,3 +1,5 @@
+const fullSecond = 80;
+
 class Timer {
     constructor(minutes, seconds) {
         this.minutes = minutes;

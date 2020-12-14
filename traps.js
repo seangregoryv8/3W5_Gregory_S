@@ -1,11 +1,11 @@
 class FlyTrap
 {
-    constructor(x, y, width, height, direction)
+    constructor(x, y, direction)
     {
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
+        this.width = (this.direction == roomDirections[0] || this.direction == roomDirections[3]) ? distance - width : 10;
+        this.height = (this.direction == roomDirections[0] || this.direction == roomDirections[3]) ? 10 : distance - width;
         this.activate = false;
         this.direction = direction;
     }
@@ -13,29 +13,28 @@ class FlyTrap
     draw()
     {
         context.fillStyle = "DarkRed"
-        if (this.direction == "down")
+        switch (this.direction)
         {
-            this.y++;
-            if (this.y == canvas.width - width - 10)
-                this.direction = "up";
-        }
-        else if (this.direction == "up")
-        {
-            this.y--;
-            if (this.y == width)
-                this.direction = "down";
-        }
-        else if (this.direction == "left")
-        {
-            this.x++;
-            if (this.x + this.width == canvas.width - width)
-                this.direction = "right"
-        }
-        else if (this.direction == "right")
-        {
-            this.x--;
-            if (this.x == width)
-                this.direction = "left"
+            case roomDirections[0]:
+                this.y--;
+                if (this.y == width)
+                    this.direction = roomDirections[3];
+                break;
+            case roomDirections[1]:
+                this.x++;
+                if (this.x + this.width == canvas.width - width)
+                    this.direction = roomDirections[2];
+                break;
+            case roomDirections[2]:
+                this.x--;
+                if (this.x == width)
+                    this.direction = roomDirections[1];
+                break;
+            case roomDirections[3]:
+                this.y++;
+                if (this.y == canvas.width - width - 10)
+                    this.direction = roomDirections[0];
+                break;
         }
         context.fillRect(this.x, this.y, this.width, this.height);
     }
@@ -62,7 +61,7 @@ class BallTrap
     update()
     {
         if (this.x + minSpace + 5 > canvas.width || this.x < minSpace)
-            this.speedX *= -1.01;
+            this.speedX *= -1;
         if (this.y + minSpace + 5 > canvas.height || this.y < minSpace)
             this.speedY *= -1;
         this.x += this.speedX;

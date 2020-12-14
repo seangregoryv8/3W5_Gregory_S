@@ -7,7 +7,7 @@ class Room {
         this.artifacts = [];
         this.trap = trap;
         for (let i = 0; i < 4; i++)
-            this.walls[i] = new Wall(roomdirections[i], "Red");
+            this.walls[i] = new Wall(roomDirections[i], "Red");
         for (let i = 0; i < randomArtifactAmount; i++)
             this.artifacts[i] = new Artifact(randomInt(minSpace, maxSpace), randomInt(50, 600))
         if (this.trap == "Fly")
@@ -23,6 +23,10 @@ class Room {
     }
     draw()
     {
+        // Will make the previous wall you entered from passable
+            for (let i = 0; i < this.walls.length; i++)
+                if (this.walls[i].direction == roomDirections[previousRoomWall])
+                    this.walls[i].enter = true;
         if (this.trap == "Fly")
         {
             if (this.Hit(character.y, this.flyTraps[0].y) && character.x - character.radius >= canvas.width - (distance + minSpace))
@@ -73,8 +77,8 @@ class Room {
         {
             context.fillStyle = "Red";
             context.fillRect(0, 0, canvas.width, canvas.height);
-            character.x = canvas.width / 2
-            character.y = canvas.height / 2
+            character.x = respawnPointX;
+            character.y = respawnPointY;
             character.gotHurt = false;
         }
     }
