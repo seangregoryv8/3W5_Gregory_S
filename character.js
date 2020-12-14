@@ -9,7 +9,7 @@ class Character
         this.speedX = 0;
         this.speedY = 0;
         this.run = 0;
-        this.rotation = 0;
+        //this.rotation = 0;
     }
     draw()
     {
@@ -48,11 +48,9 @@ class Character
         this.y += (this.y + this.diameter >= canvas.height) ? -2 : (this.y - this.diameter <= 0) ? 2 : 0;
         for (let i = 0; i < rooms[currentRoom].artifacts.length; i++)
         {
-            let artX = rooms[currentRoom].artifacts[i].x, artY = rooms[currentRoom].artifacts[i].y, artW = rooms[currentRoom].artifacts[i].width + 5
-            if ((this.x > artX - artW && this.x < artX + artW) && (this.y > artY - artW && this.y < artY + artW))
+            if (rooms[currentRoom].artifacts[i].Collect())
             {
-                rooms[currentRoom].artifacts.splice(i, i + 1);
-                console.log(rooms[currentRoom].artifacts);
+                rooms[currentRoom].artifacts.splice(i, 1);
                 document.getElementById("artifact").innerHTML = "Artifacts left: " + rooms[currentRoom].artifacts.length;
                 let randomRoom = parseInt(Math.random() * Math.floor(rooms[currentRoom].walls.length));
                 rooms[currentRoom].walls[randomRoom].changeColor();

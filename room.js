@@ -1,3 +1,4 @@
+const randomArtifactAmount = parseInt(Math.random() * (4 - 2) + 2);
 class Room {
     constructor(trap)
     {
@@ -7,7 +8,7 @@ class Room {
         this.artifacts = [];
         this.trap = trap;
         for (let i = 0; i < 4; i++)
-            this.walls[i] = new Wall(roomDirections[i], "Red");
+            this.walls[i] = new Wall(roomDirections[i]);
         for (let i = 0; i < randomArtifactAmount; i++)
             this.artifacts[i] = new Artifact(randomInt(minSpace, maxSpace), randomInt(50, 600))
         if (this.trap == "Fly")
@@ -29,21 +30,18 @@ class Room {
                     this.walls[i].enter = true;
         if (this.trap == "Fly")
         {
-            if (this.Hit(character.y, this.flyTraps[0].y) && character.x - character.radius >= canvas.width - (distance + minSpace))
-                character.gotHurt = true;
+            let oppDistance = canvas.width - (distance + minSpace)
+            if (this.Hit(character.y, this.flyTraps[0].y) && character.x - character.radius >= oppDistance)
+                character.GotHurt();
             if (this.Hit(character.y, this.flyTraps[1].y) && character.x - character.radius <= distance)
-                character.gotHurt = true;
+                character.GotHurt();
             if (this.Hit(character.x, this.flyTraps[2].x) && character.y - character.radius <= distance)
-                character.gotHurt = true;
-            if (this.Hit(character.x, this.flyTraps[3].x) && character.y - character.radius >= canvas.width - (distance + minSpace))
-                character.gotHurt = true;
+                character.GotHurt();
+            if (this.Hit(character.x, this.flyTraps[3].x) && character.y - character.radius >= oppDistance)
+                character.GotHurt();
         }
-        else if (this.trap = "Ball")
-        {
-            if (parseInt(this.ballTraps.x) - this.ballTraps.radius <= character.x + character.radius && parseInt(this.ballTraps.x) + this.ballTraps.radius >= character.x - character.radius)
-                if (parseInt(this.ballTraps.y) - this.ballTraps.radius <= character.y + character.radius && parseInt(this.ballTraps.y) + this.ballTraps.radius >= character.y - character.radius)
-                    character.gotHurt = true;
-        }
+        else if (this.trap = "Ball" && this.ballTraps.CheckForDamage())
+            character.GotHurt();
         context.fillStyle = 'rgba(0, 0, 0, 0)';
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.beginPath();
@@ -67,19 +65,7 @@ class Room {
                     this.flyTraps[i].draw();
             else if (this.trap == "Ball")
                 this.ballTraps.update();
-            this.CharacterHurt();
         }
     }
     Hit = (point, trap) => (point + character.radius >= trap && point + character.radius <= trap + 55) ? true : false
-    CharacterHurt()
-    {
-        if (character.gotHurt)
-        {
-            context.fillStyle = "Red";
-            context.fillRect(0, 0, canvas.width, canvas.height);
-            character.x = respawnPointX;
-            character.y = respawnPointY;
-            character.gotHurt = false;
-        }
-    }
 }

@@ -1,8 +1,8 @@
 class Wall {
-    constructor(direction, color)
+    constructor(direction)
     {
         this.direction = direction;
-        this.color = color;
+        this.color = "Red";
         this.enter = false;
         this.animation = false;
         this.animationMovement = distance;

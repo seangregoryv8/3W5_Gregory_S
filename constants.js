@@ -3,7 +3,6 @@ const height = 100;
 const distance = 300;
 const minSpace = 50;
 const maxSpace = 600;
-const randomArtifactAmount = parseInt(Math.random() * (4 - 2) + 2);
 const fullDegrees = 180;
 const colorMax = 256;
 // Universal variables
