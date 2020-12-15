@@ -7,6 +7,7 @@ canvas.textAlign = "center";
 let rooms = [];
 rooms[0] = new Room("Fly");
 rooms[1] = new Room("Ball");
+rooms[2] = new Room("Pressure");
 
 let character = new Character(canvas.width / 2, canvas.height / 2);
 respawnPointX = canvas.width / 2;
@@ -66,8 +67,8 @@ let animate = () => {
         document.body.style.backgroundColor = 'rgba(' + rooms[currentRoom].r + ', ' + rooms[currentRoom].g + ', ' + rooms[currentRoom].b + ', 0.3)';
     }
     timer.draw();
-    document.getElementById("time").innerHTML = "Time left: " +  timer.minuteTen + ":" + timer.secondTen;
     rooms[currentRoom].draw();
     character.update();
+    document.getElementById("time").innerHTML = "Time left: " +  timer.minuteTen + ":" + timer.secondTen;
 }
 animate();

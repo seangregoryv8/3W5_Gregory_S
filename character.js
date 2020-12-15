@@ -4,7 +4,7 @@ class Character
     {
         this.x = x;
         this.y = y;
-        this.radius = width;
+        this.radius = staticWidth;
         this.diameter = minSpace;
         this.circumference = parseInt(2 * Math.PI * this.radius);
         this.speedX = 0;

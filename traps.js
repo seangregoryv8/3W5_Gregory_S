@@ -9,7 +9,6 @@ class FlyTrap
         this.activate = false;
         this.direction = direction;
     }
-    //Ball with bouncing physics with same hurting capabilities as the lines.
     draw()
     {
         context.fillStyle = "DarkRed"
@@ -17,23 +16,23 @@ class FlyTrap
         {
             case roomDirections[0]:
                 this.y--;
-                if (this.y == width)
+                if (this.y == staticWidth)
                     this.direction = roomDirections[3];
                 break;
             case roomDirections[1]:
                 this.x++;
-                if (this.x + this.width == canvas.width - width)
+                if (this.x + this.width == canvas.width - staticWidth)
                     this.direction = roomDirections[2];
                 break;
             case roomDirections[2]:
                 this.x--;
-                if (this.x == width)
+                if (this.x == staticWidth)
                     this.direction = roomDirections[1];
                 break;
             
             case roomDirections[3]:
                 this.y++;
-                if (this.y == canvas.width - width - 10)
+                if (this.y == canvas.width - staticWidth - 10)
                     this.direction = roomDirections[0];
                 break;
         }
@@ -91,4 +90,38 @@ class BallTrap
         }
     }
     SQ = (num1, num2) => Math.sqrt(num1, num2);
+}
+
+class PressureTrap
+{
+    constructor(width, height, direction, movement)
+    {
+        this.x = (direction == "right") ? staticDistance + staticHeight : staticWidth;
+        this.y = (direction == "right") ? staticWidth : canvas.height - 35;
+        this.width = width//(movement == "up" || movement == "down");
+        this.height = height;
+        this.direction = direction;
+        this.movement = movement
+        this.activate = false;
+    }
+    draw()
+    {
+        context.fillStyle = "DarkRed"
+        switch (this.direction)
+        {
+            case "right":
+                if (character.x + character.radius >= canvas.width - 150)
+                    this.activate = true;
+                if (this.activate)
+                    this.y += 2;
+            case "left":
+                if (character.x + character.radius <= 150)
+                    this.activate = true;
+                if (this.activate)
+                    this.y -= 2;
+        }
+
+        context.fillRect(this.x, this.y, this.width, this.height);
+        
+    }
 }
