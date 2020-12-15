@@ -28,10 +28,14 @@ class Room {
                 break;
             case "Pressure":
                 this.preTraps = [];
-                this.preTraps[0] = new PressureTrap(staticDistance - staticWidth, 10, "right");
-                this.preTraps[1] = new PressureTrap(staticDistance - staticWidth, 10, "left");
-                this.preTraps[2] = new PressureTrap(staticDistance - staticWidth, 10, "right");
-                this.preTraps[3] = new PressureTrap(staticDistance - staticWidth, 10, "left");
+                this.preTraps[0] = new PressureTrap(staticDistance + staticHeight, staticWidth, "right", 1);
+                this.preTraps[1] = new PressureTrap(staticDistance + staticHeight, canvas.height - 35, "right", -1);
+                this.preTraps[2] = new PressureTrap(staticWidth, staticWidth, "left", 1);
+                this.preTraps[3] = new PressureTrap(staticWidth, canvas.height - 35, "left", -1);
+                this.preTraps[4] = new PressureTrap(staticWidth, canvas.width - staticDistance, "down", 1);
+                this.preTraps[5] = new PressureTrap(canvas.width - 35, canvas.width - staticDistance, "down", -1);
+                this.preTraps[6] = new PressureTrap(staticWidth, staticWidth, "up", 1);
+                this.preTraps[7] = new PressureTrap(canvas.width - 35, staticWidth, "up", -1);
         }
     }
     draw()
@@ -43,10 +47,10 @@ class Room {
         //this.walls[wallToBeReverted].RevertWall();
         if (!character.invin)
         {
+            let oppDistance = canvas.width - (staticDistance + minSpace)
             switch (this.trap)
             {
                 case "Fly":
-                    let oppDistance = canvas.width - (staticDistance + minSpace)
                     if (this.Hit(character.y, this.flyTraps[0].y) && character.x - character.radius >= oppDistance)
                         character.GotHurt();
                     if (this.Hit(character.y, this.flyTraps[1].y) && character.x - character.radius <= staticDistance)
@@ -59,6 +63,23 @@ class Room {
                 case "Ball":
                     this.ballTraps.CheckForDamage();
                     break;
+                case "Pressure":
+                    if (this.Hit(character.y, this.preTraps[0].y) && character.x - character.radius >= oppDistance)
+                        character.GotHurt();
+                    if (this.Hit(character.y, this.preTraps[1].y) && character.x - character.radius >= oppDistance)
+                        character.GotHurt();
+                    if (this.Hit(character.y, this.preTraps[2].y) && character.x - character.radius <= staticDistance)
+                        character.GotHurt();
+                    if (this.Hit(character.y, this.preTraps[3].y) && character.x - character.radius <= staticDistance)
+                        character.GotHurt();
+                    if (this.Hit(character.x, this.preTraps[6].x) && character.y - character.radius <= staticDistance)
+                        character.GotHurt();
+                    if (this.Hit(character.x, this.preTraps[7].x) && character.y - character.radius <= staticDistance)
+                        character.GotHurt();
+                    if (this.Hit(character.x, this.preTraps[4].x) && character.y - character.radius >= oppDistance)
+                        character.GotHurt();
+                    if (this.Hit(character.x, this.preTraps[5].x) && character.y - character.radius >= oppDistance)
+                        character.GotHurt();
             }
         }
         context.fillStyle = 'rgba(0, 0, 0, 0)';

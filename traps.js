@@ -16,23 +16,23 @@ class FlyTrap
         {
             case roomDirections[0]:
                 this.y--;
-                if (this.y == staticWidth)
+                if (this.y == width)
                     this.direction = roomDirections[3];
                 break;
             case roomDirections[1]:
                 this.x++;
-                if (this.x + this.width == canvas.width - staticWidth)
+                if (this.x + this.width == canvas.width - width)
                     this.direction = roomDirections[2];
                 break;
             case roomDirections[2]:
                 this.x--;
-                if (this.x == staticWidth)
+                if (this.x == width)
                     this.direction = roomDirections[1];
                 break;
             
             case roomDirections[3]:
                 this.y++;
-                if (this.y == canvas.width - staticWidth - 10)
+                if (this.y == canvas.width - width - 10)
                     this.direction = roomDirections[0];
                 break;
         }
@@ -94,34 +94,66 @@ class BallTrap
 
 class PressureTrap
 {
-    constructor(width, height, direction, movement)
+    constructor(x, y, direction, movement)
     {
-        this.x = (direction == "right") ? staticDistance + staticHeight : staticWidth;
-        this.y = (direction == "right") ? staticWidth : canvas.height - 35;
-        this.width = width//(movement == "up" || movement == "down");
-        this.height = height;
+        this.x = x;
+        this.y = y;
         this.direction = direction;
-        this.movement = movement
+        switch (this.direction)
+        {
+            case "left":
+            case "right":
+                this.width = staticDistance - staticWidth;
+                this.height = 10;
+                break;
+            case "down":
+            case "up":
+                this.width = 10;
+                this.height = staticDistance - staticWidth;
+                break;
+        }
+        this.movement = movement;
         this.activate = false;
     }
     draw()
     {
         context.fillStyle = "DarkRed"
+        let endTrigger = 150;
         switch (this.direction)
         {
             case "right":
-                if (character.x + character.radius >= canvas.width - 150)
-                    this.activate = true;
-                if (this.activate)
-                    this.y += 2;
             case "left":
-                if (character.x + character.radius <= 150)
-                    this.activate = true;
+                switch (this.direction)
+                {
+                    case "right":
+                        if (character.x + character.radius >= canvas.width - endTrigger)
+                            this.activate = true;
+                        break;
+                    case "left":
+                        if (character.x <= endTrigger)
+                            this.activate = true;
+                        break;
+                }
                 if (this.activate)
-                    this.y -= 2;
+                    this.y += (2 * this.movement);
+                break;
+            case "up":
+            case "down":
+                switch (this.direction)
+                {
+                    case "down":
+                        if (character.y + character.radius >= canvas.height - endTrigger)
+                            this.activate = true;
+                        break;
+                    case "up":
+                        if (character.y <= endTrigger)
+                            this.activate = true;
+                        break;
+                }
+                if (this.activate)
+                    this.x += (2 * this.movement);
+                break;
         }
-
         context.fillRect(this.x, this.y, this.width, this.height);
-        
     }
 }
