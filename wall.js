@@ -5,6 +5,7 @@ class Wall {
         this.color = "Red";
         this.enter = false;
         this.animation = false;
+        this.impassible = false;
         this.animationMovement = distance;
     }
     draw()
@@ -31,6 +32,7 @@ class Wall {
         }
         if (this.animationMovement == distance - 100)
         {
+            wallToBeReverted = previousRoomWall;
             switch (this.direction)
             {
                 case roomDirections[1]:
@@ -69,5 +71,15 @@ class Wall {
     {
         this.color = "Green";
         this.enter = true;
+    }
+    ImpassibleWall()
+    {
+        this.color = "Black";
+        this.impassible = true;
+    }
+    RevertWall()
+    {
+        this.color = "Red";
+        this.impassible = false;
     }
 }

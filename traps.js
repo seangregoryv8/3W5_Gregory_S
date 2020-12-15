@@ -61,9 +61,9 @@ class BallTrap
     }
     update()
     {
-        if (this.x + minSpace + 5 > canvas.width || this.x < minSpace)
+        if (this.x + minSpace > canvas.width || this.x < minSpace)
             this.speedX *= -1;
-        if (this.y + minSpace + 5 > canvas.height || this.y < minSpace)
+        if (this.y + minSpace > canvas.height || this.y < minSpace)
             this.speedY *= -1;
         this.x += this.speedX;
         this.y += this.speedY;
@@ -71,8 +71,24 @@ class BallTrap
     }
     CheckForDamage()
     {
-        if (parseInt(this.x - this.radius) <= character.x + character.radius && parseInt(this.x) + this.radius >= character.x - character.radius)
-            if (parseInt(this.y - this.radius) <= character.y + character.radius && parseInt(this.y) + this.radius >= character.y - character.radius)
-                character.GotHurt();
+        let distanceX = this.x - character.x, distanceY = this.y - character.y;
+        let radii = this.radius + character.radius;
+        if (!character.invin && distanceX * distanceX + distanceY * distanceY <= radii * radii)
+        {
+            //Difference
+            let diffX = character.x - this.x, diffY = character.y - this.y;
+            //Speed
+            let speed = Math.sqrt((this.speedX * this.speedX) + (this.speedY * this.speedY));
+            //Distance
+            let distance = Math.sqrt((diffX * diffX) + (diffY * diffY));
+            diffX /= distance;
+            diffY /= distance;
+            //Apply original speed
+            let dir = { x : -diffX * speed, y : -diffY * speed };
+            this.speedX = dir.x;
+            this.speedY = dir.y;
+            character.GotHurt();
+        }
     }
+    SQ = (num1, num2) => Math.sqrt(num1, num2);
 }

@@ -5,18 +5,15 @@ canvas.width = 700;
 canvas.textAlign = "center";
 
 let rooms = [];
-rooms[0] = new Room("Ball");
-rooms[1] = new Room("Fly");
+rooms[0] = new Room("Fly");
+rooms[1] = new Room("Ball");
 
 let character = new Character(canvas.width / 2, canvas.height / 2);
 respawnPointX = canvas.width / 2;
 respawnPointY = canvas.height / 2;
 
 let r = randomInt(1, colorMax), g = randomInt(1, colorMax), b = randomInt(1, colorMax);
-r = randomInt(1, colorMax), g = randomInt(1, colorMax), b = randomInt(1, colorMax);
-document.body.style.backgroundColor = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.3)';
 let timer = new Timer(10, 0);
-var stopwatch = 0;
 
 document.onkeydown = e => {
     switch (e.keyCode) {
@@ -66,11 +63,11 @@ let animate = () => {
             if (rooms[i].complete == false)
                 currentRoom = i;
         needToRedraw = false;
+        document.body.style.backgroundColor = 'rgba(' + rooms[currentRoom].r + ', ' + rooms[currentRoom].g + ', ' + rooms[currentRoom].b + ', 0.3)';
     }
+    timer.draw();
+    document.getElementById("time").innerHTML = "Time left: " +  timer.minuteTen + ":" + timer.secondTen;
     rooms[currentRoom].draw();
     character.update();
-    stopwatch++;
-    if (stopwatch % fullSecond == 0)
-        timer.countDown(1);
 }
 animate();
