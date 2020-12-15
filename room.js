@@ -3,7 +3,6 @@ class Room {
     constructor(trap)
     {
         this.borderColor = "Black";
-        this.complete = false;
         this.r = randomInt(1, colorMax);
         this.g = randomInt(1, colorMax);
         this.b = randomInt(1, colorMax);

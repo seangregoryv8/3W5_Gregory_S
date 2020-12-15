@@ -64,19 +64,19 @@ class Character
     {
         this.x += (this.x + this.diameter >= canvas.width) ? -2 : (this.x - this.diameter <= 0) ? 2 : 0;
         this.y += (this.y + this.diameter >= canvas.height) ? -2 : (this.y - this.diameter <= 0) ? 2 : 0;
-        for (let i = 0; i < rooms[currentRoom].artifacts.length; i++)
+        for (let i = 0; i < room.artifacts.length; i++)
         {
-            if (rooms[currentRoom].artifacts[i].Collect())
+            if (room.artifacts[i].Collect())
             {
-                rooms[currentRoom].artifacts.splice(i, 1);
+                room.artifacts.splice(i, 1);
                 collectedArtifacts++;
                 document.getElementById("artifact").innerHTML = "Number of Artifacts: " + collectedArtifacts;
                 let randomRoom;
                 do
                 {
-                    randomRoom = randomInt(0, rooms[currentRoom].walls.length)
-                } while (rooms[currentRoom].walls[randomRoom].impassible)
-                rooms[currentRoom].walls[randomRoom].changeColor();
+                    randomRoom = randomInt(0, room.walls.length)
+                } while (room.walls[randomRoom].impassible)
+                room.walls[randomRoom].changeColor();
             }
         }
     }
@@ -89,6 +89,6 @@ class Character
         context.fillStyle = "Red";
         context.fillRect(0, 0, canvas.width, canvas.height);
         this.addInvin();
-        rooms[currentRoom].draw();
+        room.draw();
     }
 }

@@ -16,23 +16,23 @@ class FlyTrap
         {
             case roomDirections[0]:
                 this.y--;
-                if (this.y == width)
+                if (this.y == staticWidth)
                     this.direction = roomDirections[3];
                 break;
             case roomDirections[1]:
                 this.x++;
-                if (this.x + this.width == canvas.width - width)
+                if (this.x + this.width == canvas.width - staticWidth)
                     this.direction = roomDirections[2];
                 break;
             case roomDirections[2]:
                 this.x--;
-                if (this.x == width)
+                if (this.x == staticWidth)
                     this.direction = roomDirections[1];
                 break;
             
             case roomDirections[3]:
                 this.y++;
-                if (this.y == canvas.width - width - 10)
+                if (this.y == canvas.width - staticWidth - 10)
                     this.direction = roomDirections[0];
                 break;
         }

@@ -2,18 +2,10 @@ let canvas = document.getElementById("main");
 let context = canvas.getContext('2d');
 canvas.height = 700;
 canvas.width = 700;
-canvas.textAlign = "center";
 
-let rooms = [];
-rooms[0] = new Room("Fly");
-rooms[1] = new Room("Ball");
-rooms[2] = new Room("Pressure");
+let room = chooseNewRoom();
 
 let character = new Character(canvas.width / 2, canvas.height / 2);
-respawnPointX = canvas.width / 2;
-respawnPointY = canvas.height / 2;
-
-let r = randomInt(1, colorMax), g = randomInt(1, colorMax), b = randomInt(1, colorMax);
 let timer = new Timer(10, 0);
 
 document.onkeydown = e => {
@@ -55,19 +47,33 @@ document.onkeyup = e => {
     }
 };
 
+function chooseNewRoom() {
+    let newRoom = randomInt(1, 4);
+    switch (newRoom)
+    {
+        case 1:
+            return new Room("Ball");
+        case 2:
+            return new Room("Pressure");
+        case 3:
+            return new Room("Fly");
+        // Purely in case 
+        case 4:
+            return new Room("Fly");
+    }
+}
+
 let animate = () => {
     requestAnimationFrame(animate);
     context.clearRect(0, 0, canvas.width, canvas.height);
     if (needToRedraw)
     {
-        for (let i = 0; i < rooms.length; i++)
-            if (rooms[i].complete == false)
-                currentRoom = i;
+        room = chooseNewRoom()
         needToRedraw = false;
-        document.body.style.backgroundColor = 'rgba(' + rooms[currentRoom].r + ', ' + rooms[currentRoom].g + ', ' + rooms[currentRoom].b + ', 0.3)';
+        document.body.style.backgroundColor = 'rgba(' + room.r + ', ' + room.g + ', ' + room.b + ', 0.3)';
     }
     timer.draw();
-    rooms[currentRoom].draw();
+    room.draw();
     character.update();
     document.getElementById("time").innerHTML = "Time left: " +  timer.minuteTen + ":" + timer.secondTen;
 }

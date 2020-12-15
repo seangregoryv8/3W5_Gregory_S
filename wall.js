@@ -57,13 +57,12 @@ class Wall {
             respawnPointY = character.y;
             this.animationMovement = staticDistance;
             //Sets the new room to complete
-            rooms[currentRoom].complete = true;
             needToRedraw = true;
         }
     }
     AnimDist = (start, end, i, between) => {
         let topBottomMin = staticDistance + character.radius, topBottomMax = staticDistance + character.radius * 3;
-        if (start == end && rooms[currentRoom].walls[i].enter && this.animationMovement > staticDistance - 100 && BetweenAnd(between, topBottomMin, topBottomMax))
+        if (start == end && room.walls[i].enter && this.animationMovement > staticDistance - 100 && BetweenAnd(between, topBottomMin, topBottomMax))
             this.animationMovement--;
     }
     BetweenOr = (condition, minimum, maximum) => (condition >= minimum || condition <= maximum) ? true : false;
