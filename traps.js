@@ -38,6 +38,26 @@ class FlyTrap
         }
         context.fillRect(this.x, this.y, this.width, this.height);
     }
+    CheckForDamage()
+    {
+        switch (this.direction)
+        {
+            case "down":
+                if (this.Hit(character.y, this.y) && character.x - character.radius >= canvas.width / 2)
+                    character.GotHurt();
+            case "up":
+                if (this.Hit(character.y, this.y) && character.x - character.radius <= doorToCornerDistance)
+                    character.GotHurt();
+            case "right":
+                if (this.Hit(character.x, this.x) && character.y - character.radius >= canvas.width / 2)
+                    character.GotHurt();
+            case "left":
+                if (this.Hit(character.x, this.x) && character.y - character.radius <= doorToCornerDistance)
+                    character.GotHurt();
+        }
+    }
+    Hit = (point, trap) => (point + character.radius >= trap && point + character.radius <= trap + 55) ? true : false;
+
 }
 
 class BallTrap
@@ -60,9 +80,9 @@ class BallTrap
     }
     update()
     {
-        if (this.x + minSpace > canvas.width || this.x < minSpace)
+        if (this.x + minDoorSpace > canvas.width || this.x < minDoorSpace)
             this.speedX *= -1;
-        if (this.y + minSpace > canvas.height || this.y < minSpace)
+        if (this.y + minDoorSpace > canvas.height || this.y < minDoorSpace)
             this.speedY *= -1;
         this.x += this.speedX;
         this.y += this.speedY;
@@ -103,13 +123,13 @@ class PressureTrap
         {
             case "left":
             case "right":
-                this.width = staticDistance - staticWidth;
+                this.width = doorToCornerDistance - staticWidth;
                 this.height = 10;
                 break;
             case "down":
             case "up":
                 this.width = 10;
-                this.height = staticDistance - staticWidth;
+                this.height = doorToCornerDistance - staticWidth;
                 break;
         }
         this.movement = movement;
@@ -156,4 +176,23 @@ class PressureTrap
         }
         context.fillRect(this.x, this.y, this.width, this.height);
     }
+    CheckForDamage()
+    {
+        switch (this.direction)
+        {
+            case "down":
+                if (this.Hit(character.y, this.y) && character.x - character.radius >= canvas.width / 2)
+                    character.GotHurt();
+            case "up":
+                if (this.Hit(character.y, this.y) && character.x - character.radius <= doorToCornerDistance)
+                    character.GotHurt();
+            case "right":
+                if (this.Hit(character.x, this.x) && character.y - character.radius >= canvas.width / 2)
+                    character.GotHurt();
+            case "left":
+                if (this.Hit(character.x, this.x) && character.y - character.radius <= doorToCornerDistance)
+                    character.GotHurt();
+        }
+    }
+    Hit = (point, trap) => (point + character.radius >= trap && point + character.radius <= trap + 55) ? true : false;
 }

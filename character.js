@@ -5,7 +5,7 @@ class Character
         this.x = x;
         this.y = y;
         this.radius = staticWidth;
-        this.diameter = minSpace;
+        this.diameter = minDoorSpace;
         this.circumference = parseInt(2 * Math.PI * this.radius);
         this.speedX = 0;
         this.speedY = 0;
@@ -80,10 +80,10 @@ class Character
             }
         }
     }
-    enterLeft() { this.x = canvas.height - minSpace; }
-    enterRight() { this.x = minSpace; }
-    enterDown() { this.y = minSpace; }
-    enterUp() { this.y = canvas.height - minSpace; }
+    enterLeft() { this.x = canvas.height - minDoorSpace; }
+    enterRight() { this.x = minDoorSpace; }
+    enterDown() { this.y = minDoorSpace; }
+    enterUp() { this.y = canvas.height - minDoorSpace; }
     GotHurt()
     {
         context.fillStyle = "Red";

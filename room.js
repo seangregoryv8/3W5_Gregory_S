@@ -12,29 +12,27 @@ class Room {
         for (let i = 0; i < 4; i++)
             this.walls[i] = new Wall(roomDirections[i]);
         for (let i = 0; i < randomArtifactAmount; i++)
-            this.artifacts[i] = new Artifact(randomInt(minSpace, maxSpace), randomInt(50, 600))
+            this.artifacts[i] = new Artifact(randomInt(minDoorSpace, maxSpace), randomInt(50, 600))
+        let oppositeDistance = canvas.width - 36;
         switch (this.trap)
         {
             case "Fly":
                 this.flyTraps = [];
-                this.flyTraps[0] = new FlyTrap(staticDistance + staticHeight, staticWidth, staticDistance - staticWidth, 10, "down");
-                this.flyTraps[1] = new FlyTrap(staticWidth, canvas.height - 36, staticDistance - staticWidth, 10, "down");
-                this.flyTraps[2] = new FlyTrap(staticWidth, staticWidth, 10, staticDistance - staticWidth, "left");
-                this.flyTraps[3] = new FlyTrap(canvas.width - 36, canvas.width - staticDistance, 10, staticDistance - staticWidth, "right");
+                this.flyTraps[0] = new FlyTrap(doorToCornerDistance + staticHeight, staticWidth, doorToCornerDistance - staticWidth, 10, "down");
+                this.flyTraps[1] = new FlyTrap(staticWidth, oppositeDistance, doorToCornerDistance - staticWidth, 10, "up");
+                this.flyTraps[2] = new FlyTrap(staticWidth, staticWidth, 10, doorToCornerDistance - staticWidth, "left");
+                this.flyTraps[3] = new FlyTrap(oppositeDistance, canvas.width - doorToCornerDistance, 10, doorToCornerDistance - staticWidth, "right");
                 break;
             case "Ball":
-                this.ballTraps = new BallTrap(randomInt(minSpace, maxSpace), randomInt(minSpace, maxSpace), staticWidth);
+                this.ballTraps = new BallTrap(randomInt(minDoorSpace, maxSpace), randomInt(minDoorSpace, maxSpace), staticWidth);
                 break;
             case "Pressure":
-                this.preTraps = [];
-                this.preTraps[0] = new PressureTrap(staticDistance + staticHeight, staticWidth, "right", 1);
-                this.preTraps[1] = new PressureTrap(staticDistance + staticHeight, canvas.height - 35, "right", -1);
-                this.preTraps[2] = new PressureTrap(staticWidth, staticWidth, "left", 1);
-                this.preTraps[3] = new PressureTrap(staticWidth, canvas.height - 35, "left", -1);
-                this.preTraps[4] = new PressureTrap(staticWidth, canvas.width - staticDistance, "down", 1);
-                this.preTraps[5] = new PressureTrap(canvas.width - 35, canvas.width - staticDistance, "down", -1);
-                this.preTraps[6] = new PressureTrap(staticWidth, staticWidth, "up", 1);
-                this.preTraps[7] = new PressureTrap(canvas.width - 35, staticWidth, "up", -1);
+                this.pressureTraps = [];
+                let allXs = [doorToCornerDistance + staticHeight, doorToCornerDistance + staticHeight, staticWidth, staticWidth, staticWidth, oppositeDistance--, staticWidth, oppositeDistance--];
+                let allYs = [staticWidth, oppositeDistance--, staticWidth, oppositeDistance--, canvas.width - doorToCornerDistance, canvas.width - doorToCornerDistance, staticWidth, staticWidth];
+                let allDirections = ["right", "right", "left", "left", "down", "down", "up", "up"], allMovements = [1, -1, 1, -1, 1, -1, 1, -1];
+                for (let i = 0; i < 8; i++)
+                    this.pressureTraps[i] = new PressureTrap(allXs[i], allYs[i], allDirections[i], allMovements[i]);
         }
     }
     draw()
@@ -43,56 +41,62 @@ class Room {
             for (let i = 0; i < this.walls.length; i++)
                 if (this.walls[i].direction == previousRoomWall)
                     this.walls[i].ImpassibleWall();
-        //this.walls[wallToBeReverted].RevertWall();
         if (!character.invin)
         {
-            let oppDistance = canvas.width - (staticDistance + minSpace)
+            let horizontalDistance = doorToCornerDistance + minDoorSpace;
+            console.log(doorToCornerDistance);
+            console.log(horizontalDistance);
             switch (this.trap)
             {
                 case "Fly":
-                    if (this.Hit(character.y, this.flyTraps[0].y) && character.x - character.radius >= oppDistance)
+                    //for (let i = 0; i < this.flyTraps.length; i++)
+                        //this.flyTraps[i].CheckForDamage();
+                    if (this.Hit(character.y, this.flyTraps[0].y) && character.x - character.radius >= horizontalDistance)
                         character.GotHurt();
-                    if (this.Hit(character.y, this.flyTraps[1].y) && character.x - character.radius <= staticDistance)
+                    if (this.Hit(character.y, this.flyTraps[1].y) && character.x - character.radius <= doorToCornerDistance)
                         character.GotHurt();
-                    if (this.Hit(character.x, this.flyTraps[2].x) && character.y - character.radius <= staticDistance)
+                    if (this.Hit(character.x, this.flyTraps[2].x) && character.y - character.radius <= doorToCornerDistance)
                         character.GotHurt();
-                    if (this.Hit(character.x, this.flyTraps[3].x) && character.y - character.radius >= oppDistance)
+                    if (this.Hit(character.x, this.flyTraps[3].x) && character.y - character.radius >= horizontalDistance)
                         character.GotHurt();
                     break;
                 case "Ball":
                     this.ballTraps.CheckForDamage();
                     break;
                 case "Pressure":
-                    if (this.Hit(character.y, this.preTraps[0].y) && character.x - character.radius >= oppDistance)
+                    if (this.Hit(character.y, this.pressureTraps[4].y) && character.x - character.radius >= horizontalDistance)
                         character.GotHurt();
-                    if (this.Hit(character.y, this.preTraps[1].y) && character.x - character.radius >= oppDistance)
+                    if (this.Hit(character.y, this.pressureTraps[5].y) && character.x - character.radius <= doorToCornerDistance)
                         character.GotHurt();
-                    if (this.Hit(character.y, this.preTraps[2].y) && character.x - character.radius <= staticDistance)
+                    if (this.Hit(character.x, this.pressureTraps[6].x) && character.y - character.radius <= doorToCornerDistance)
                         character.GotHurt();
-                    if (this.Hit(character.y, this.preTraps[3].y) && character.x - character.radius <= staticDistance)
+                    if (this.Hit(character.x, this.pressureTraps[7].x) && character.y - character.radius >= horizontalDistance)
                         character.GotHurt();
-                    if (this.Hit(character.x, this.preTraps[6].x) && character.y - character.radius <= staticDistance)
+                    if (this.Hit(character.y, this.pressureTraps[2].y) && character.x - character.radius >= horizontalDistance)
                         character.GotHurt();
-                    if (this.Hit(character.x, this.preTraps[7].x) && character.y - character.radius <= staticDistance)
+                    if (this.Hit(character.y, this.pressureTraps[3].y) && character.x - character.radius <= doorToCornerDistance)
                         character.GotHurt();
-                    if (this.Hit(character.x, this.preTraps[4].x) && character.y - character.radius >= oppDistance)
+                    if (this.Hit(character.x, this.pressureTraps[0].x) && character.y - character.radius <= doorToCornerDistance)
                         character.GotHurt();
-                    if (this.Hit(character.x, this.preTraps[5].x) && character.y - character.radius >= oppDistance)
+                    if (this.Hit(character.x, this.pressureTraps[1].x) && character.y - character.radius >= horizontalDistance)
                         character.GotHurt();
+                    //for (let i = 0; i < this.pressureTraps.length; i++)
+                        //this.pressureTraps[i].CheckForDamage();
+
             }
         }
         context.fillStyle = 'rgba(0, 0, 0, 0)';
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.beginPath();
         context.fillStyle = this.borderColor;
-        context.fillRect(0, 0, staticWidth, staticDistance);
-        context.fillRect(0, 0, staticDistance, staticWidth);
-        context.fillRect(0, canvas.height - staticDistance, staticWidth, staticDistance);
-        context.fillRect(0, canvas.height - staticWidth, staticDistance, staticWidth);
-        context.fillRect(canvas.height - staticWidth, 0, staticWidth, staticDistance);
-        context.fillRect(canvas.height - staticDistance, 0, staticDistance, staticWidth);
-        context.fillRect(canvas.height - staticWidth, canvas.height - staticDistance, staticWidth, staticDistance);
-        context.fillRect(canvas.height - staticDistance, canvas.height - staticWidth, staticDistance, staticWidth);
+        context.fillRect(0, 0, staticWidth, doorToCornerDistance);
+        context.fillRect(0, 0, doorToCornerDistance, staticWidth);
+        context.fillRect(0, canvas.height - doorToCornerDistance, staticWidth, doorToCornerDistance);
+        context.fillRect(0, canvas.height - staticWidth, doorToCornerDistance, staticWidth);
+        context.fillRect(canvas.height - staticWidth, 0, staticWidth, doorToCornerDistance);
+        context.fillRect(canvas.height - doorToCornerDistance, 0, doorToCornerDistance, staticWidth);
+        context.fillRect(canvas.height - staticWidth, canvas.height - doorToCornerDistance, staticWidth, doorToCornerDistance);
+        context.fillRect(canvas.height - doorToCornerDistance, canvas.height - staticWidth, doorToCornerDistance, staticWidth);
         for (let i = 0; i < this.walls.length; i++)
             this.walls[i].draw();
         if (!this.complete)
@@ -109,8 +113,8 @@ class Room {
                     this.ballTraps.update();
                     break;
                 case "Pressure":
-                    for (let i = 0; i < this.preTraps.length; i++)
-                        this.preTraps[i].draw()
+                    for (let i = 0; i < this.pressureTraps.length; i++)
+                        this.pressureTraps[i].draw()
                     break;
             }
         }
