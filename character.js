@@ -65,20 +65,14 @@ class Character
         this.x += (this.x + this.diameter >= canvas.width) ? -2 : (this.x - this.diameter <= 0) ? 2 : 0;
         this.y += (this.y + this.diameter >= canvas.height) ? -2 : (this.y - this.diameter <= 0) ? 2 : 0;
         for (let i = 0; i < room.artifacts.length; i++)
-        {
             if (room.artifacts[i].Collect())
             {
                 room.artifacts.splice(i, 1);
                 collectedArtifacts++;
-                document.getElementById("artifact").innerHTML = "Number of Artifacts: " + collectedArtifacts;
                 let randomRoom;
-                do
-                {
-                    randomRoom = randomInt(0, room.walls.length)
-                } while (room.walls[randomRoom].impassible)
+                do { randomRoom = randomInt(0, room.walls.length) } while (room.walls[randomRoom].impassible)
                 room.walls[randomRoom].changeColor();
             }
-        }
     }
     enterLeft() { this.x = canvas.height - minDoorSpace; }
     enterRight() { this.x = minDoorSpace; }
@@ -86,7 +80,14 @@ class Character
     enterUp() { this.y = canvas.height - minDoorSpace; }
     GotHurt()
     {
+        let hurtSound = randomInt(1, 4)
+        switch (hurtSound)
+        {
+            case 1:
+                hurtSound = new Audio()
+        }
         context.fillStyle = "Red";
+        lives--;
         context.fillRect(0, 0, canvas.width, canvas.height);
         this.addInvin();
         room.draw();

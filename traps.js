@@ -1,39 +1,42 @@
 class FlyTrap
 {
-    constructor(x, y, width, height, direction)
+    constructor(x, y, direction)
     {
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
-        this.activate = false;
         this.direction = direction;
+        this.otherWay = false;
+        switch (this.direction)
+        {
+            case "up":
+            case "down":
+                this.width = doorToCornerDistance - staticWidth;
+                this.height = 10;
+                break;
+            case "left":
+            case "right":
+                this.width = 10;
+                this.height = doorToCornerDistance - staticWidth;
+                break;
+        }
+        this.activate = false;
     }
     draw()
     {
         context.fillStyle = "DarkRed"
         switch (this.direction)
         {
-            case roomDirections[0]:
-                this.y--;
-                if (this.y == staticWidth)
-                    this.direction = roomDirections[3];
+            case "up":
+            case "down":
+                if (this.y <= staticWidth) { this.otherWay = true }
+                if (this.y + this.height >= canvas.width - staticWidth) { this.otherWay = false; }
+                this.y += (this.otherWay) ? 1 : -1
                 break;
-            case roomDirections[1]:
-                this.x++;
-                if (this.x + this.width == canvas.width - staticWidth)
-                    this.direction = roomDirections[2];
-                break;
-            case roomDirections[2]:
-                this.x--;
-                if (this.x == staticWidth)
-                    this.direction = roomDirections[1];
-                break;
-            
-            case roomDirections[3]:
-                this.y++;
-                if (this.y == canvas.width - staticWidth - 10)
-                    this.direction = roomDirections[0];
+            case "left":
+            case "right":
+                if (this.x <= staticWidth) { this.otherWay = true }
+                if (this.x + this.width >= canvas.width - staticWidth) {this.otherWay = false; }
+                this.x += (this.otherWay) ? 1 : -1
                 break;
         }
         context.fillRect(this.x, this.y, this.width, this.height);
@@ -42,23 +45,25 @@ class FlyTrap
     {
         switch (this.direction)
         {
-            case "right":
+            case "down":
                 if (character.y - character.radius <= this.y + this.height && character.y + character.radius >= this.y && character.x + character.radius >= this.x)
                     character.GotHurt();
                 break;
-            case "left":
+            case "up":
                 if (character.y - character.radius <= this.y + this.height && character.y + character.radius >= this.y && character.x <= this.x + doorToCornerDistance)
                     character.GotHurt();
                 break;
-            case "down":
+            case "right":
                 if (character.x - character.radius <= this.x + this.width && character.x + character.radius >= this.x && character.y + character.radius >= this.y)
                     character.GotHurt();
                 break;
-            case "up":
+            case "left":
                 if (character.x - character.radius <= this.x + this.width && character.x + character.radius >= this.x && character.y <= this.y + doorToCornerDistance)
                     character.GotHurt();
                 break;
         }
+        if (this.distance == "down")
+            console.log(this.x)
     }
     Hit = (point, trap) => (point + character.radius >= trap && point + character.radius <= trap + 55) ? true : false;
 

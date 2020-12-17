@@ -49,7 +49,7 @@ document.onkeyup = e => {
 
 function chooseNewRoom()
 {
-    let newRoom = randomInt(2, 3);
+    let newRoom = randomInt(1, 4);
     switch (newRoom)
     {
         case 1:
@@ -64,18 +64,31 @@ function chooseNewRoom()
     }
 }
 
-let animate = () => {
+let animate = () =>
+{
     requestAnimationFrame(animate);
     context.clearRect(0, 0, canvas.width, canvas.height);
-    if (needToRedraw)
+    if (!welcome)
     {
-        room = chooseNewRoom()
-        needToRedraw = false;
-        document.body.style.backgroundColor = 'rgba(' + room.r + ', ' + room.g + ', ' + room.b + ', 0.3)';
+
     }
-    timer.draw();
-    room.draw();
-    character.update();
-    document.getElementById("time").innerHTML = "Time left: " +  timer.minuteTen + ":" + timer.secondTen;
+    //else if (gameOver)
+   //{
+
+    //}
+    else
+    {
+        if (needToRedraw)
+        {
+            room = chooseNewRoom()
+            needToRedraw = false;
+            document.body.style.backgroundColor = 'rgba(' + room.r + ', ' + room.g + ', ' + room.b + ', 0.3)';
+        }
+        timer.draw();
+        room.draw();
+        character.update();
+        document.getElementById("artifact").innerHTML = "Number of Artifacts: " + collectedArtifacts;
+        document.getElementById("time").innerHTML = "Time left: " +  timer.minuteTen + ":" + timer.secondTen;
+    }
 }
 animate();

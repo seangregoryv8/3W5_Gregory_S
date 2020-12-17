@@ -21,3 +21,9 @@ var roomColorBlue = 0;
 var roomColorGreen = 0;
 var previousRoomWall;
 var wallToBeReverted = 0;
+
+var welcome = true;
+var tutorial = true;
+var lives = 3;
+var gameOver = false;
+var getBackUp = false;

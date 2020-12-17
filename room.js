@@ -18,19 +18,19 @@ class Room {
         switch (this.trap)
         {
             case "Fly":
-
                 this.flyTraps = [];
-                this.flyTraps[0] = new FlyTrap(doorToCornerDistance + staticHeight, staticWidth, doorToCornerDistance - staticWidth, 10, "down");
-                this.flyTraps[1] = new FlyTrap(staticWidth, oppositeDistance, doorToCornerDistance - staticWidth, 10, "up");
-                this.flyTraps[2] = new FlyTrap(staticWidth, staticWidth, 10, doorToCornerDistance - staticWidth, "left");
-                this.flyTraps[3] = new FlyTrap(oppositeDistance, canvas.width - doorToCornerDistance, 10, doorToCornerDistance - staticWidth, "right");
+                allXs = [doorToCornerDistance + staticHeight, staticWidth, staticWidth, oppositeDistance];
+                allYs = [staticWidth, oppositeDistance, staticWidth, canvas.width - doorToCornerDistance];
+                allDirections = ["down", "up", "left", "right"];
+                for (let i = 0; i < 4; i++)
+                    this.flyTraps[i] = new FlyTrap(allXs[i], allYs[i], allDirections[i]);
                 break;
             case "Ball":
                 this.ballTraps = new BallTrap(randomInt(minDoorSpace, maxSpace), randomInt(minDoorSpace, maxSpace), staticWidth);
                 break;
             case "Pressure":
                 this.pressureTraps = [];
-                allXs = [doorToCornerDistance + staticHeight, doorToCornerDistance + staticHeight, staticWidth, staticWidth, staticWidth, oppositeDistance--, staticWidth, oppositeDistance--];
+                allXs = [doorToCornerDistance + staticHeight, doorToCornerDistance + staticHeight, staticWidth, staticWidth, staticWidth, oppositeDistance++, staticWidth, oppositeDistance++];
                 allYs = [staticWidth, oppositeDistance + 3, staticWidth, oppositeDistance + 3, canvas.width - doorToCornerDistance, canvas.width - doorToCornerDistance, staticWidth, staticWidth];
                 allDirections = ["right", "right", "left", "left", "down", "down", "up", "up"];
                 allMovements = [1, -1, 1, -1, 1, -1, 1, -1];
@@ -45,21 +45,11 @@ class Room {
             if (this.walls[i].direction == previousRoomWall)
                 this.walls[i].ImpassibleWall();
         if (!character.invin)
-        {
-            let horizontalDistance = doorToCornerDistance + minDoorSpace;
             switch (this.trap)
             {
                 case "Fly":
                     for (let i = 0; i < this.flyTraps.length; i++)
-                        this.flyTraps[i].CheckForDamage();/*
-                    if (this.Hit(character.y, this.flyTraps[0].y) && character.x - character.radius >= horizontalDistance)
-                        character.GotHurt();
-                    if (this.Hit(character.y, this.flyTraps[1].y) && character.x - character.radius <= doorToCornerDistance)
-                        character.GotHurt();
-                    if (this.Hit(character.x, this.flyTraps[2].x) && character.y - character.radius <= doorToCornerDistance)
-                        character.GotHurt();
-                    if (this.Hit(character.x, this.flyTraps[3].x) && character.y - character.radius >= horizontalDistance)
-                        character.GotHurt();*/
+                        this.flyTraps[i].CheckForDamage();
                     break;
                 case "Ball":
                     this.ballTraps.CheckForDamage();
@@ -69,7 +59,6 @@ class Room {
                         this.pressureTraps[i].CheckForDamage();
                     break;
             }
-        }
         context.fillStyle = 'rgba(0, 0, 0, 0)';
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.beginPath();
@@ -84,24 +73,21 @@ class Room {
         context.fillRect(canvas.height - doorToCornerDistance, canvas.height - staticWidth, doorToCornerDistance, staticWidth);
         for (let i = 0; i < this.walls.length; i++)
             this.walls[i].draw();
-        if (!this.complete)
+        for (let i = 0; i < this.artifacts.length; i++)
+            this.artifacts[i].draw();
+        switch (this.trap)
         {
-            for (let i = 0; i < this.artifacts.length; i++)
-                this.artifacts[i].draw();
-            switch (this.trap)
-            {
-                case "Fly":
-                    for (let i = 0; i < this.flyTraps.length; i++)
-                        this.flyTraps[i].draw();
-                    break;
-                case "Ball":
-                    this.ballTraps.update();
-                    break;
-                case "Pressure":
-                    for (let i = 0; i < this.pressureTraps.length; i++)
-                        this.pressureTraps[i].draw()
-                    break;
-            }
+            case "Fly":
+                for (let i = 0; i < this.flyTraps.length; i++)
+                    this.flyTraps[i].draw();
+                break;
+            case "Ball":
+                this.ballTraps.update();
+                break;
+            case "Pressure":
+                for (let i = 0; i < this.pressureTraps.length; i++)
+                    this.pressureTraps[i].draw()
+                break;
         }
     }
     Hit = (point, trap) => (point + character.radius >= trap && point + character.radius <= trap + 55) ? true : false;
