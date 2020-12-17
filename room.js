@@ -31,7 +31,7 @@ class Room {
                 let allXs = [doorToCornerDistance + staticHeight, doorToCornerDistance + staticHeight, staticWidth, staticWidth, staticWidth, oppositeDistance--, staticWidth, oppositeDistance--];
                 let allYs = [staticWidth, oppositeDistance--, staticWidth, oppositeDistance--, canvas.width - doorToCornerDistance, canvas.width - doorToCornerDistance, staticWidth, staticWidth];
                 let allDirections = ["right", "right", "left", "left", "down", "down", "up", "up"], allMovements = [1, -1, 1, -1, 1, -1, 1, -1];
-                for (let i = 0; i < 8; i++)
+                for (let i = 0; i < 5; i++)
                     this.pressureTraps[i] = new PressureTrap(allXs[i], allYs[i], allDirections[i], allMovements[i]);
         }
     }
@@ -44,13 +44,11 @@ class Room {
         if (!character.invin)
         {
             let horizontalDistance = doorToCornerDistance + minDoorSpace;
-            console.log(doorToCornerDistance);
-            console.log(horizontalDistance);
             switch (this.trap)
             {
                 case "Fly":
-                    //for (let i = 0; i < this.flyTraps.length; i++)
-                        //this.flyTraps[i].CheckForDamage();
+                    for (let i = 0; i < this.flyTraps.length; i++)
+                        this.flyTraps[i].CheckForDamage();/*
                     if (this.Hit(character.y, this.flyTraps[0].y) && character.x - character.radius >= horizontalDistance)
                         character.GotHurt();
                     if (this.Hit(character.y, this.flyTraps[1].y) && character.x - character.radius <= doorToCornerDistance)
@@ -58,30 +56,37 @@ class Room {
                     if (this.Hit(character.x, this.flyTraps[2].x) && character.y - character.radius <= doorToCornerDistance)
                         character.GotHurt();
                     if (this.Hit(character.x, this.flyTraps[3].x) && character.y - character.radius >= horizontalDistance)
-                        character.GotHurt();
+                        character.GotHurt();*/
                     break;
                 case "Ball":
                     this.ballTraps.CheckForDamage();
                     break;
                 case "Pressure":
-                    if (this.Hit(character.y, this.pressureTraps[4].y) && character.x - character.radius >= horizontalDistance)
-                        character.GotHurt();
-                    if (this.Hit(character.y, this.pressureTraps[5].y) && character.x - character.radius <= doorToCornerDistance)
-                        character.GotHurt();
-                    if (this.Hit(character.x, this.pressureTraps[6].x) && character.y - character.radius <= doorToCornerDistance)
-                        character.GotHurt();
-                    if (this.Hit(character.x, this.pressureTraps[7].x) && character.y - character.radius >= horizontalDistance)
-                        character.GotHurt();
-                    if (this.Hit(character.y, this.pressureTraps[2].y) && character.x - character.radius >= horizontalDistance)
-                        character.GotHurt();
-                    if (this.Hit(character.y, this.pressureTraps[3].y) && character.x - character.radius <= doorToCornerDistance)
-                        character.GotHurt();
+                    for (let i = 0; i < this.pressureTraps.length; i++)
+                        this.pressureTraps[i].CheckForDamage();
+                    //console.log(this.pressureTraps[0].y)
+                    //if (character.y - character.radius == this.pressureTraps[0].y + this.pressureTraps[0].height)
+                        //console.log("GOTTEM")
+                
+                /*
                     if (this.Hit(character.x, this.pressureTraps[0].x) && character.y - character.radius <= doorToCornerDistance)
                         character.GotHurt();
                     if (this.Hit(character.x, this.pressureTraps[1].x) && character.y - character.radius >= horizontalDistance)
                         character.GotHurt();
-                    //for (let i = 0; i < this.pressureTraps.length; i++)
-                        //this.pressureTraps[i].CheckForDamage();
+                        
+                        if (this.Hit(character.y, this.pressureTraps[4].y) && character.x - character.radius >= horizontalDistance)
+                            character.GotHurt();
+                        if (this.Hit(character.y, this.pressureTraps[5].y) && character.x - character.radius <= doorToCornerDistance)
+                            character.GotHurt();
+                        if (this.Hit(character.x, this.pressureTraps[6].x) && character.y - character.radius <= doorToCornerDistance)
+                            character.GotHurt();
+                        if (this.Hit(character.x, this.pressureTraps[7].x) && character.y - character.radius >= horizontalDistance)
+                            character.GotHurt();
+                        if (this.Hit(character.y, this.pressureTraps[2].y) && character.x - character.radius >= horizontalDistance)
+                            character.GotHurt();
+                        if (this.Hit(character.y, this.pressureTraps[3].y) && character.x - character.radius <= doorToCornerDistance)
+                            character.GotHurt();*/
+                    break;
 
             }
         }

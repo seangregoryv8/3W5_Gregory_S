@@ -47,8 +47,9 @@ document.onkeyup = e => {
     }
 };
 
-function chooseNewRoom() {
-    let newRoom = randomInt(1, 4);
+function chooseNewRoom()
+{
+    let newRoom = randomInt(2, 3);
     switch (newRoom)
     {
         case 1:
@@ -57,7 +58,7 @@ function chooseNewRoom() {
             return new Room("Pressure");
         case 3:
             return new Room("Fly");
-        // Purely in case 
+        // Purely in case
         case 4:
             return new Room("Fly");
     }
