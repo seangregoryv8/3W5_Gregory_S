@@ -14,9 +14,11 @@ class Room {
         for (let i = 0; i < randomArtifactAmount; i++)
             this.artifacts[i] = new Artifact(randomInt(minDoorSpace, maxSpace), randomInt(50, 600))
         let oppositeDistance = canvas.width - 36;
+        let allXs, allYs, allDirections, allMovements;
         switch (this.trap)
         {
             case "Fly":
+
                 this.flyTraps = [];
                 this.flyTraps[0] = new FlyTrap(doorToCornerDistance + staticHeight, staticWidth, doorToCornerDistance - staticWidth, 10, "down");
                 this.flyTraps[1] = new FlyTrap(staticWidth, oppositeDistance, doorToCornerDistance - staticWidth, 10, "up");
@@ -28,19 +30,20 @@ class Room {
                 break;
             case "Pressure":
                 this.pressureTraps = [];
-                let allXs = [doorToCornerDistance + staticHeight, doorToCornerDistance + staticHeight, staticWidth, staticWidth, staticWidth, oppositeDistance--, staticWidth, oppositeDistance--];
-                let allYs = [staticWidth, oppositeDistance--, staticWidth, oppositeDistance--, canvas.width - doorToCornerDistance, canvas.width - doorToCornerDistance, staticWidth, staticWidth];
-                let allDirections = ["right", "right", "left", "left", "down", "down", "up", "up"], allMovements = [1, -1, 1, -1, 1, -1, 1, -1];
-                for (let i = 0; i < 5; i++)
+                allXs = [doorToCornerDistance + staticHeight, doorToCornerDistance + staticHeight, staticWidth, staticWidth, staticWidth, oppositeDistance--, staticWidth, oppositeDistance--];
+                allYs = [staticWidth, oppositeDistance + 3, staticWidth, oppositeDistance + 3, canvas.width - doorToCornerDistance, canvas.width - doorToCornerDistance, staticWidth, staticWidth];
+                allDirections = ["right", "right", "left", "left", "down", "down", "up", "up"];
+                allMovements = [1, -1, 1, -1, 1, -1, 1, -1];
+                for (let i = 0; i < 8; i++)
                     this.pressureTraps[i] = new PressureTrap(allXs[i], allYs[i], allDirections[i], allMovements[i]);
         }
     }
     draw()
     {
         // Will make the previous wall you entered from passable
-            for (let i = 0; i < this.walls.length; i++)
-                if (this.walls[i].direction == previousRoomWall)
-                    this.walls[i].ImpassibleWall();
+        for (let i = 0; i < this.walls.length; i++)
+            if (this.walls[i].direction == previousRoomWall)
+                this.walls[i].ImpassibleWall();
         if (!character.invin)
         {
             let horizontalDistance = doorToCornerDistance + minDoorSpace;
@@ -64,30 +67,7 @@ class Room {
                 case "Pressure":
                     for (let i = 0; i < this.pressureTraps.length; i++)
                         this.pressureTraps[i].CheckForDamage();
-                    //console.log(this.pressureTraps[0].y)
-                    //if (character.y - character.radius == this.pressureTraps[0].y + this.pressureTraps[0].height)
-                        //console.log("GOTTEM")
-                
-                /*
-                    if (this.Hit(character.x, this.pressureTraps[0].x) && character.y - character.radius <= doorToCornerDistance)
-                        character.GotHurt();
-                    if (this.Hit(character.x, this.pressureTraps[1].x) && character.y - character.radius >= horizontalDistance)
-                        character.GotHurt();
-                        
-                        if (this.Hit(character.y, this.pressureTraps[4].y) && character.x - character.radius >= horizontalDistance)
-                            character.GotHurt();
-                        if (this.Hit(character.y, this.pressureTraps[5].y) && character.x - character.radius <= doorToCornerDistance)
-                            character.GotHurt();
-                        if (this.Hit(character.x, this.pressureTraps[6].x) && character.y - character.radius <= doorToCornerDistance)
-                            character.GotHurt();
-                        if (this.Hit(character.x, this.pressureTraps[7].x) && character.y - character.radius >= horizontalDistance)
-                            character.GotHurt();
-                        if (this.Hit(character.y, this.pressureTraps[2].y) && character.x - character.radius >= horizontalDistance)
-                            character.GotHurt();
-                        if (this.Hit(character.y, this.pressureTraps[3].y) && character.x - character.radius <= doorToCornerDistance)
-                            character.GotHurt();*/
                     break;
-
             }
         }
         context.fillStyle = 'rgba(0, 0, 0, 0)';

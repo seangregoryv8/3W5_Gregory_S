@@ -42,18 +42,22 @@ class FlyTrap
     {
         switch (this.direction)
         {
-            case "down":
-                if (this.Hit(character.y, this.y) && character.x - character.radius >= canvas.width / 2)
-                    character.GotHurt();
-            case "up":
-                if (this.Hit(character.y, this.y) && character.x - character.radius <= doorToCornerDistance)
-                    character.GotHurt();
             case "right":
-                if (this.Hit(character.x, this.x) && character.y - character.radius >= canvas.width / 2)
+                if (character.y - character.radius <= this.y + this.height && character.y + character.radius >= this.y && character.x + character.radius >= this.x)
                     character.GotHurt();
+                break;
             case "left":
-                if (this.Hit(character.x, this.x) && character.y - character.radius <= doorToCornerDistance)
+                if (character.y - character.radius <= this.y + this.height && character.y + character.radius >= this.y && character.x <= this.x + doorToCornerDistance)
                     character.GotHurt();
+                break;
+            case "down":
+                if (character.x - character.radius <= this.x + this.width && character.x + character.radius >= this.x && character.y + character.radius >= this.y)
+                    character.GotHurt();
+                break;
+            case "up":
+                if (character.x - character.radius <= this.x + this.width && character.x + character.radius >= this.x && character.y <= this.y + doorToCornerDistance)
+                    character.GotHurt();
+                break;
         }
     }
     Hit = (point, trap) => (point + character.radius >= trap && point + character.radius <= trap + 55) ? true : false;
@@ -155,7 +159,7 @@ class PressureTrap
                         break;
                 }
                 if (this.activate)
-                    this.y += (2 * this.movement);
+                    this.y += (1.75 * this.movement);
                 break;
             case "up":
             case "down":
@@ -183,36 +187,20 @@ class PressureTrap
             case "right":
                 if (character.y - character.radius <= this.y + this.height && character.y + character.radius >= this.y && character.x + character.radius >= this.x)
                     character.GotHurt();
+                break;
             case "left":
                 if (character.y - character.radius <= this.y + this.height && character.y + character.radius >= this.y && character.x <= this.x + doorToCornerDistance)
                     character.GotHurt();
+                break;
             case "down":
-                if (character.x - character.radius <= this.x + this.width && character.x + character.radius >= this.x)
-                    console.log("HI");
-        }
-        if (this.direction == "down")
-            console.log(this.x)
-
-        /*let hitBox = character.x + character.radius;
-        switch (this.direction)
-        {
-            
-            case "down":
-                if (this.Hit(character.y, this.y) && character.x - character.radius >= canvas.width / 2)
-                    console.log("DOWN")
+                if (character.x - character.radius <= this.x + this.width && character.x + character.radius >= this.x && character.y + character.radius >= this.y)
+                    character.GotHurt();
+                break;
             case "up":
-                if (this.Hit(character.y, this.y) && character.x - character.radius <= doorToCornerDistance)
-                console.log("UP")
-            case "right":
-                if (this.Hit(character.x, this.x) && character.y - character.radius >= canvas.width / 2)
-                console.log("RIGHT")
-            case "left":
-                if (hitBox >= this.x && hitBox <= this.x + this.width && character.y - character.radius <= doorToCornerDistance)
-                console.log("LEFT")
+                if (character.x - character.radius <= this.x + this.width && character.x + character.radius >= this.x && character.y <= this.y + doorToCornerDistance)
+                    character.GotHurt();
+                break;
         }
-        /*console.log(character.x)
-        if (this.direction == "left")
-            console.log(this.x)*/
     }
     Hit = (point, trap) => (point + character.radius >= trap && point + character.radius <= trap + 55) ? true : false;
 }
