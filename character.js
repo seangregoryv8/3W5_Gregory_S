@@ -84,8 +84,16 @@ class Character
         switch (hurtSound)
         {
             case 1:
-                hurtSound = new Audio()
+                currentAudio = new Audio('Hurt1.mp3');
+                break;
+            case 2:
+                currentAudio = new Audio('Hurt2.mp3');
+                break;
+            case 3:
+                currentAudio = new Audio('SoundHurt3.mp3');
+                break;
         }
+        currentAudio.play();
         context.fillStyle = "Red";
         lives--;
         context.fillRect(0, 0, canvas.width, canvas.height);
