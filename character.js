@@ -67,6 +67,19 @@ class Character
         for (let i = 0; i < room.artifacts.length; i++)
             if (room.artifacts[i].Collect())
             {
+                switch (randomInt(1, 4))
+                {
+                    case 1:
+                        currentAudio = new Audio('Sound_effects/Artifact1.mp3');
+                        break;
+                    case 2:
+                        currentAudio = new Audio('Sound_effects/Artifact2.mp3');
+                        break;
+                    case 3:
+                        currentAudio = new Audio('Sound_effects/Artifact3.mp3');
+                        break;
+                }
+                currentAudio.play();
                 room.artifacts.splice(i, 1);
                 collectedArtifacts++;
                 let randomRoom;
@@ -80,18 +93,32 @@ class Character
     enterUp() { this.y = canvas.height - minDoorSpace; }
     GotHurt()
     {
-        let hurtSound = randomInt(1, 4)
-        switch (hurtSound)
+        if (lives != 1)
+            switch (randomInt(1, 4))
+            {
+                case 1:
+                    currentAudio = new Audio('Sound_effects/Hurt1.mp3');
+                    break;
+                case 2:
+                    currentAudio = new Audio('Sound_effects/Hurt2.mp3');
+                    break;
+                case 3:
+                    currentAudio = new Audio('Sound_effects/Hurt3.mp3');
+                    break;
+            }
+        else
         {
-            case 1:
-                currentAudio = new Audio('Hurt1.mp3');
-                break;
-            case 2:
-                currentAudio = new Audio('Hurt2.mp3');
-                break;
-            case 3:
-                currentAudio = new Audio('SoundHurt3.mp3');
-                break;
+            switch (randomInt(1, 3))
+            {
+                case 1:
+                    currentAudio = new Audio('Sound_effects/Death1.mp3');
+                    break;
+                case 2:
+                    currentAudio = new Audio('Sound_effects/Death2.mp3');
+                    break;
+            }
+            gameOver = true;
+            
         }
         currentAudio.play();
         context.fillStyle = "Red";

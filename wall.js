@@ -13,19 +13,19 @@ class Wall {
         context.fillStyle = this.color;
         switch (this.direction)
         {
-            case roomDirections[0]:
+            case "up":
                 this.AnimDist(character.y, minDoorSpace, 0, character.x)
                 context.fillRect(this.animationMovement, 0, staticHeight, staticWidth);
                 break;
-            case roomDirections[1]:
+            case "left":
                 this.AnimDist(character.x, minDoorSpace, 1, character.y)
                 context.fillRect(0, this.animationMovement, staticWidth, staticHeight);
                 break;
-            case roomDirections[2]:
+            case "right":
                 this.AnimDist(character.x, canvas.height - minDoorSpace, 2, character.y)
                 context.fillRect(canvas.width - staticWidth, this.animationMovement, staticWidth, staticHeight);
                 break;
-            case roomDirections[3]:
+            case "down":
                 this.AnimDist(character.y, canvas.height - minDoorSpace, 3, character.x)
                 context.fillRect(this.animationMovement, canvas.height - staticWidth, staticHeight, staticWidth);
                 break;
@@ -35,23 +35,25 @@ class Wall {
             wallToBeReverted = previousRoomWall;
             switch (this.direction)
             {
-                case roomDirections[1]:
+                case "left":
                     character.enterLeft();
-                    previousRoomWall = roomDirections[2];
+                    previousRoomWall = "right";
                     break;
-                case roomDirections[2]:
+                case "right":
                     character.enterRight();
-                    previousRoomWall = roomDirections[1];
+                    previousRoomWall = "left";
                     break;
-                case roomDirections[3]:
+                case "down":
                     character.enterDown();
-                    previousRoomWall = roomDirections[0];
+                    previousRoomWall = "up";
                     break;
-                case roomDirections[0]:
+                case "up":
                     character.enterUp();
-                    previousRoomWall = roomDirections[3];
+                    previousRoomWall = "down";
                     break;
             }
+            currentAudio = new Audio('Sound_effects/DoorOpen.mp3');
+            currentAudio.play();
             // Sets the new respawn point
             respawnPointX = character.x;
             respawnPointY = character.y;
@@ -65,7 +67,6 @@ class Wall {
         if (start == end && room.walls[i].enter && this.animationMovement > doorToCornerDistance - 100 && BetweenAnd(between, topBottomMin, topBottomMax))
             this.animationMovement--;
     }
-    BetweenOr = (condition, minimum, maximum) => (condition >= minimum || condition <= maximum) ? true : false;
     changeColor()
     {
         this.color = "Green";

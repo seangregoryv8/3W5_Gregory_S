@@ -1,4 +1,5 @@
-class Timer {
+class Timer
+{
     constructor(minutes, seconds)
     {
         this.minutes = minutes;
@@ -20,8 +21,5 @@ class Timer {
         this.minuteTen = (this.minutes < 10) ? "0" + this.minutes : this.minutes;
         this.secondTen = (this.seconds < 10) ? "0" + this.seconds : this.seconds;
     }
-    setSeconds(seconds)
-    {
-        this.seconds = seconds
-    }
+    setSeconds(seconds) { this.seconds = seconds }
 }

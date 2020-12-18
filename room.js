@@ -44,21 +44,6 @@ class Room {
         for (let i = 0; i < this.walls.length; i++)
             if (this.walls[i].direction == previousRoomWall)
                 this.walls[i].ImpassibleWall();
-        if (!character.invin)
-            switch (this.trap)
-            {
-                case "Fly":
-                    for (let i = 0; i < this.flyTraps.length; i++)
-                        this.flyTraps[i].CheckForDamage();
-                    break;
-                case "Ball":
-                    this.ballTraps.CheckForDamage();
-                    break;
-                case "Pressure":
-                    for (let i = 0; i < this.pressureTraps.length; i++)
-                        this.pressureTraps[i].CheckForDamage();
-                    break;
-            }
         context.fillStyle = 'rgba(0, 0, 0, 0)';
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.beginPath();
@@ -79,14 +64,14 @@ class Room {
         {
             case "Fly":
                 for (let i = 0; i < this.flyTraps.length; i++)
-                    this.flyTraps[i].draw();
+                    this.flyTraps[i].update();
                 break;
             case "Ball":
                 this.ballTraps.update();
                 break;
             case "Pressure":
                 for (let i = 0; i < this.pressureTraps.length; i++)
-                    this.pressureTraps[i].draw()
+                    this.pressureTraps[i].update()
                 break;
         }
     }

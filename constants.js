@@ -9,7 +9,6 @@ const fullSecond = 80;
 // Universal variables
 var collectedArtifacts = 0;
 const roomDirections = ["up", "left", "right", "down"];
-const trapDirections = ["down", "up", "left", "right"];
 var invincibility = 0;
 
 var needToRedraw = true;
@@ -22,6 +21,7 @@ var roomColorGreen = 0;
 var previousRoomWall;
 var wallToBeReverted = 0;
 
+var currentAudio;
 var welcome = true;
 var tutorial = true;
 var lives = 3;

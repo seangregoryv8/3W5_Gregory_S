@@ -63,7 +63,8 @@ function chooseNewRoom()
             return new Room("Fly");
     }
 }
-
+let gameOverWait = 0;
+let alpha = 0, change = 0.02;
 let animate = () =>
 {
     requestAnimationFrame(animate);
@@ -72,10 +73,15 @@ let animate = () =>
     {
 
     }
-    //else if (gameOver)
-   //{
-
-    //}
+    else if (gameOver)
+    {
+        timer.draw();
+        room.draw();
+        character.color = "Red";
+        character.draw();
+        alpha += change;
+        document.body.style.backgroundColor = 'rgba(0, 0, 0, ' + alpha + ')';
+    }
     else
     {
         if (needToRedraw)
