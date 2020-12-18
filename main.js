@@ -63,8 +63,8 @@ function chooseNewRoom()
             return new Room("Fly");
     }
 }
-let gameOverWait = 0;
-let alpha = 0, change = 0.02;
+let gameOverWait = 0, gameOverColor = 102;
+let alpha = 0, change = 0.02, textFade = 1.0;
 let animate = () =>
 {
     requestAnimationFrame(animate);
@@ -79,8 +79,30 @@ let animate = () =>
         room.draw();
         character.color = "Red";
         character.draw();
-        alpha += change;
-        document.body.style.backgroundColor = 'rgba(0, 0, 0, ' + alpha + ')';
+        document.getElementById("artifact").innerHTML = "";
+        document.getElementById("time").innerHTML = "";
+        context.fillStyle = 'rgba(' + gameOverColor + ', 0, 0, ' + alpha + ')';
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        document.body.style.backgroundColor = 'rgba(' + gameOverColor + ', ' + room.g + ', ' + room.b + ', ' + alpha + ')';
+        room.g--;
+        room.b--;
+        //Fades to dark red
+        if (alpha <= 1)
+            alpha += change;
+        //Waits a second and a half
+        else if (gameOverWait <= fullSecond * 1.5)
+            gameOverWait++;
+        //Fades to black
+        else if (gameOverColor >= 0)
+            gameOverColor--;
+        //Game over screen appears
+        else
+        {
+            artifactContext.fillStyle = "Gray";
+            let artifactText = "Artifacts"
+            artifactContext.font = '24px Arial';
+            artifactContext.fillText(artifactText, character.diameter + 3, character.radius)
+        }
     }
     else
     {
