@@ -4,7 +4,7 @@ canvas.height = 700;
 canvas.width = 700;
 
 let room = chooseNewRoom();
-
+let ambiancePlaying = false;
 let character = new Character(canvas.width / 2, canvas.height / 2);
 let timer = new Timer(10, 0);
 
@@ -63,8 +63,7 @@ function chooseNewRoom()
             return new Room("Fly");
     }
 }
-let gameOverWait = 0, gameOverColor = 102;
-let alpha = 0, change = 0.02, textFade = 1.0;
+
 let animate = () =>
 {
     requestAnimationFrame(animate);
@@ -75,37 +74,16 @@ let animate = () =>
     }
     else if (gameOver)
     {
-        timer.draw();
-        room.draw();
-        character.color = "Red";
-        character.draw();
-        document.getElementById("artifact").innerHTML = "";
-        document.getElementById("time").innerHTML = "";
-        context.fillStyle = 'rgba(' + gameOverColor + ', 0, 0, ' + alpha + ')';
-        context.fillRect(0, 0, canvas.width, canvas.height);
-        document.body.style.backgroundColor = 'rgba(' + gameOverColor + ', ' + room.g + ', ' + room.b + ', ' + alpha + ')';
-        room.g--;
-        room.b--;
-        //Fades to dark red
-        if (alpha <= 1)
-            alpha += change;
-        //Waits a second and a half
-        else if (gameOverWait <= fullSecond * 1.5)
-            gameOverWait++;
-        //Fades to black
-        else if (gameOverColor >= 0)
-            gameOverColor--;
-        //Game over screen appears
-        else
-        {
-            artifactContext.fillStyle = "Gray";
-            let artifactText = "Artifacts"
-            artifactContext.font = '24px Arial';
-            artifactContext.fillText(artifactText, character.diameter + 3, character.radius)
-        }
+        GameOver();
     }
     else
     {
+        if (!ambiancePlaying)
+        {
+            ambianceAudio = new Audio('Sound_effects/Ambiance.mp3');
+            ambianceAudio.play();
+            ambiancePlaying = true;
+        }
         if (needToRedraw)
         {
             room = chooseNewRoom()
@@ -115,7 +93,6 @@ let animate = () =>
         timer.draw();
         room.draw();
         character.update();
-        document.getElementById("artifact").innerHTML = "Number of Artifacts: " + collectedArtifacts;
         document.getElementById("time").innerHTML = "Time left: " +  timer.minuteTen + ":" + timer.secondTen;
     }
 }

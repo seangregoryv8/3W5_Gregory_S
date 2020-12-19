@@ -118,7 +118,6 @@ class Character
                     break;
             }
             gameOver = true;
-            
         }
         currentAudio.play();
         context.fillStyle = "Red";

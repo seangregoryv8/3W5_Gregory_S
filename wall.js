@@ -14,19 +14,19 @@ class Wall {
         switch (this.direction)
         {
             case "up":
-                this.AnimDist(character.y, minDoorSpace, 0, character.x)
+                this.AnimateDistance(character.y, minDoorSpace, 0, character.x)
                 context.fillRect(this.animationMovement, 0, staticHeight, staticWidth);
                 break;
             case "left":
-                this.AnimDist(character.x, minDoorSpace, 1, character.y)
+                this.AnimateDistance(character.x, minDoorSpace, 1, character.y)
                 context.fillRect(0, this.animationMovement, staticWidth, staticHeight);
                 break;
             case "right":
-                this.AnimDist(character.x, canvas.height - minDoorSpace, 2, character.y)
+                this.AnimateDistance(character.x, canvas.height - minDoorSpace, 2, character.y)
                 context.fillRect(canvas.width - staticWidth, this.animationMovement, staticWidth, staticHeight);
                 break;
             case "down":
-                this.AnimDist(character.y, canvas.height - minDoorSpace, 3, character.x)
+                this.AnimateDistance(character.y, canvas.height - minDoorSpace, 3, character.x)
                 context.fillRect(this.animationMovement, canvas.height - staticWidth, staticHeight, staticWidth);
                 break;
         }
@@ -52,8 +52,7 @@ class Wall {
                     previousRoomWall = "down";
                     break;
             }
-            currentAudio = new Audio('Sound_effects/DoorOpen.mp3');
-            currentAudio.play();
+            this.animation = false;
             // Sets the new respawn point
             respawnPointX = character.x;
             respawnPointY = character.y;
@@ -62,10 +61,19 @@ class Wall {
             needToRedraw = true;
         }
     }
-    AnimDist = (start, end, i, between) => {
+    AnimateDistance = (playerEdge, doorEdge, wallIndex, oppositePlayerEdge) =>
+    {
         let topBottomMin = doorToCornerDistance + character.radius, topBottomMax = doorToCornerDistance + character.radius * 3;
-        if (start == end && room.walls[i].enter && this.animationMovement > doorToCornerDistance - 100 && BetweenAnd(between, topBottomMin, topBottomMax))
+        if (playerEdge == doorEdge && room.walls[wallIndex].enter && this.animationMovement > doorToCornerDistance - 100 && BetweenAnd(oppositePlayerEdge, topBottomMin, topBottomMax))
+        {
             this.animationMovement--;
+            if (!this.animation)
+            {
+                currentAudio = new Audio('Sound_effects/DoorOpen.mp3');
+                currentAudio.play();
+                this.animation = true;
+            }
+        }
     }
     changeColor()
     {

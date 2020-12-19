@@ -21,7 +21,7 @@ var roomColorGreen = 0;
 var previousRoomWall;
 var wallToBeReverted = 0;
 
-var currentAudio;
+var currentAudio, ambianceAudio;
 var welcome = true;
 var tutorial = true;
 var lives = 3;
