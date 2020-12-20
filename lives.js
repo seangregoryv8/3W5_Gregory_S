@@ -41,7 +41,6 @@ let artifactDraw = () =>
         let artifactText = "Artifacts"
         artifactContext.font = '24px Arial';
         artifactContext.fillText(artifactText, character.diameter + 3, character.radius)
-        
         for (let i = 0; i < collectedArtifacts; i++)
         {
             if (i % 7 == 0 && i != 0)

@@ -27,3 +27,5 @@ var tutorial = true;
 var lives = 3;
 var gameOver = false;
 var getBackUp = false;
+
+var endCounter = 0;

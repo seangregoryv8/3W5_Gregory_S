@@ -64,6 +64,12 @@ function chooseNewRoom()
     }
 }
 
+//Associated with the game over screen
+let wait = 0, color = 102;
+let tryAgain = false;
+let alpha = 0, change = 0.02;
+let stage = "fadeRed";
+
 let animate = () =>
 {
     requestAnimationFrame(animate);
@@ -74,7 +80,54 @@ let animate = () =>
     }
     else if (gameOver)
     {
-        GameOver();
+        if (stage != "playAgain")
+        {
+            ambianceAudio.pause();
+            timer.draw();
+            room.draw();
+            character.color = "Red";
+            character.draw();
+            document.getElementById("time").innerHTML = "";
+            document.body.style.backgroundColor = 'rgba(' + color + ', ' + room.g + ', ' + room.b + ', ' + alpha + ')';
+            room.g--;
+            room.b--;
+        }
+        context.fillStyle = 'rgba(' + color + ', 0, 0, ' + alpha + ')';
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        switch (stage)
+        {
+            case "fadeRed":
+                if (alpha >= 1)
+                    stage = "firstWait"
+                else
+                    alpha += change;
+                break;
+            case "firstWait":
+                if (wait >= fullSecond * 1.5) stage = "fadeBlack"
+                else wait++;
+                break;
+            case "fadeBlack":
+                if (color <= 0) {
+                    stage = "secondWait";
+                    wait = 0;
+                }
+                else color--;
+                break;
+            case "secondWait":
+                if (wait >= fullSecond * 2.5) stage = "yiruma"
+                else wait++;
+            case "yiruma":
+                currentAudio = new Audio("Sound_effects/GameOver.mp3")
+                currentAudio.play();
+                stage = "playAgain";
+            case "playAgain":
+                context.clearRect(0, 0, canvas.width / 2, canvas.height / 2);
+                context.fillStyle = "DarkRed";
+                let deathText = "Unfortunate fate, you can never escape...";
+                context.font = '30px Courier New';
+                context.fillText(deathText, 10, canvas.width / 2)
+                document.getElementById("tryAgain").style.visibility = "visible";
+        }
     }
     else
     {
@@ -86,14 +139,56 @@ let animate = () =>
         }
         if (needToRedraw)
         {
-            room = chooseNewRoom()
-            needToRedraw = false;
-            document.body.style.backgroundColor = 'rgba(' + room.r + ', ' + room.g + ', ' + room.b + ', 0.3)';
+            if (collectedArtifacts >= 4)
+            {
+                room = new Room("End");
+                if (endCounter >= 1)
+                    for (let i = 0; i < 4; i++)
+                        room.walls[i].ImpassibleWall();
+                if (endCounter >= 2)
+                {
+                    room.r = 0;
+                    room.g = 0;
+                    room.b = 0;
+                }
+                document.body.style.backgroundColor = 'rgba(' + room.r + ', ' + room.g + ', ' + room.b + ', 0.3)';
+            }
+            else
+            {
+                room = chooseNewRoom()
+                needToRedraw = false;
+                document.body.style.backgroundColor = 'rgba(' + room.r + ', ' + room.g + ', ' + room.b + ', 0.3)';
+            }
         }
-        timer.draw();
+        if (collectedArtifacts >= 4)
+        {
+            room.artifacts = [];
+            ambianceAudio.pause();
+        }
+        else
+            timer.draw();
         room.draw();
         character.update();
         document.getElementById("time").innerHTML = "Time left: " +  timer.minuteTen + ":" + timer.secondTen;
     }
 }
+
+function TryAgain()
+{
+    color = 102;
+    tryAgain = false;
+    alpha = 0;
+    document.getElementById("tryAgain").style.visibility = "hidden";
+    currentAudio.pause();
+    ambianceAudio.play();
+    gameOver = false;
+    stage = "fadeRed";
+    wait = 0;
+    needToRedraw = true;
+    lives = 3;
+    collectedArtifacts = 0;
+    character.color = "Purple";
+    timer = new Timer(10, 0);
+}
+
 animate();

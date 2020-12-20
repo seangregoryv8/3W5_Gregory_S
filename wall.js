@@ -11,55 +11,68 @@ class Wall {
     draw()
     {
         context.fillStyle = this.color;
-        switch (this.direction)
+        if (room.trap != "End")
         {
-            case "up":
-                this.AnimateDistance(character.y, minDoorSpace, 0, character.x)
-                context.fillRect(this.animationMovement, 0, staticHeight, staticWidth);
-                break;
-            case "left":
-                this.AnimateDistance(character.x, minDoorSpace, 1, character.y)
-                context.fillRect(0, this.animationMovement, staticWidth, staticHeight);
-                break;
-            case "right":
-                this.AnimateDistance(character.x, canvas.height - minDoorSpace, 2, character.y)
-                context.fillRect(canvas.width - staticWidth, this.animationMovement, staticWidth, staticHeight);
-                break;
-            case "down":
-                this.AnimateDistance(character.y, canvas.height - minDoorSpace, 3, character.x)
-                context.fillRect(this.animationMovement, canvas.height - staticWidth, staticHeight, staticWidth);
-                break;
-        }
-        if (this.animationMovement == doorToCornerDistance - 100)
-        {
-            wallToBeReverted = previousRoomWall;
             switch (this.direction)
             {
+                case "up":
+                    this.AnimateDistance(character.y, minDoorSpace, 0, character.x)
+                    context.fillRect(this.animationMovement, 0, staticHeight, staticWidth);
+                    break;
                 case "left":
-                    character.enterLeft();
-                    previousRoomWall = "right";
+                    this.AnimateDistance(character.x, minDoorSpace, 1, character.y)
+                    context.fillRect(0, this.animationMovement, staticWidth, staticHeight);
                     break;
                 case "right":
-                    character.enterRight();
-                    previousRoomWall = "left";
+                    this.AnimateDistance(character.x, canvas.height - minDoorSpace, 2, character.y)
+                    context.fillRect(canvas.width - staticWidth, this.animationMovement, staticWidth, staticHeight);
                     break;
                 case "down":
-                    character.enterDown();
-                    previousRoomWall = "up";
-                    break;
-                case "up":
-                    character.enterUp();
-                    previousRoomWall = "down";
+                    this.AnimateDistance(character.y, canvas.height - minDoorSpace, 3, character.x)
+                    context.fillRect(this.animationMovement, canvas.height - staticWidth, staticHeight, staticWidth);
                     break;
             }
+            if (this.animationMovement == doorToCornerDistance - 100)
+            {
+                wallToBeReverted = previousRoomWall;
+                switch (this.direction)
+                {
+                    case "left":
+                        character.enterLeft();
+                        previousRoomWall = "right";
+                        break;
+                    case "right":
+                        character.enterRight();
+                        previousRoomWall = "left";
+                        break;
+                    case "down":
+                        character.enterDown();
+                        previousRoomWall = "up";
+                        break;
+                    case "up":
+                        character.enterUp();
+                        previousRoomWall = "down";
+                        break;
+                }
+                this.animation = false;
+                // Sets the new respawn point
+                respawnPointX = character.x;
+                respawnPointY = character.y;
+                this.animationMovement = doorToCornerDistance;
+                //Sets the new room to complete
+                needToRedraw = true;
+            }
+        }
+        else
+        {
             this.animation = false;
-            // Sets the new respawn point
             respawnPointX = character.x;
             respawnPointY = character.y;
             this.animationMovement = doorToCornerDistance;
-            //Sets the new room to complete
             needToRedraw = true;
+            endCounter++;
         }
+        
     }
     AnimateDistance = (playerEdge, doorEdge, wallIndex, oppositePlayerEdge) =>
     {

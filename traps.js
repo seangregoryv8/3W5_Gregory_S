@@ -165,20 +165,20 @@ class PressureTrap
             {
                 case "right":
                     if (character.x + character.radius >= canvas.width - endTrigger) { this.activate = true; }
-                    if (this.activate) { this.y += (2 * this.movement); }
+                    if (this.activate) { this.y += (1.75 * this.movement); }
                     break;
                 case "left":
                     if (character.x <= endTrigger) { this.activate = true;}
-                    if (this.activate) { this.y += (2 * this.movement); }
+                    if (this.activate) { this.y += (1.75 * this.movement); }
                     break;
                 case "up":
                     if (character.y <= endTrigger) { this.activate = true;}
-                    if (this.activate) { this.x += (2 * this.movement); }
+                    if (this.activate) { this.x += (1.75 * this.movement); }
                         
                     break;
                 case "down":
                     if (character.y + character.radius >= canvas.height - endTrigger) { this.activate = true; }
-                    if (this.activate) { this.x += (2 * this.movement);}
+                    if (this.activate) { this.x += (1.75 * this.movement);}
                     break;
             }
         }

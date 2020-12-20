@@ -1,5 +1,6 @@
 const randomArtifactAmount = parseInt(Math.random() * (4 - 2) + 2);
-class Room {
+class Room
+{
     constructor(trap)
     {
         this.borderColor = "Black";

@@ -14,13 +14,13 @@
     display: inline;
     margin: 30px;
 }
-#mini
+#mini { margin-left: 10px; }
+#text, #gameOver { text-align: center; }
+#tryAgain
 {
-    margin-left: 10px;
-}
-#text { text-align: center; }
-#gameOver
-{
-    text-align: center;
-    color: white;
+    visibility: hidden;
+    margin: 5px;
+    width: 80px;
+    height: 40px;
+    background-color: gray;
 }
