@@ -69,6 +69,7 @@ let wait = 0, color = 102;
 let tryAgain = false;
 let alpha = 0, change = 0.02;
 let stage = "fadeRed";
+let winStage = "nothing";
 
 let animate = () =>
 {
@@ -139,19 +140,11 @@ let animate = () =>
         }
         if (needToRedraw)
         {
-            if (collectedArtifacts >= 4)
+            if (collectedArtifacts >= 2)
             {
                 room = new Room("End");
-                if (endCounter >= 1)
-                    for (let i = 0; i < 4; i++)
-                        room.walls[i].ImpassibleWall();
-                if (endCounter >= 2)
-                {
-                    room.r = 0;
-                    room.g = 0;
-                    room.b = 0;
-                }
                 document.body.style.backgroundColor = 'rgba(' + room.r + ', ' + room.g + ', ' + room.b + ', 0.3)';
+                winStage = "emptyRoom";
             }
             else
             {
@@ -159,11 +152,27 @@ let animate = () =>
                 needToRedraw = false;
                 document.body.style.backgroundColor = 'rgba(' + room.r + ', ' + room.g + ', ' + room.b + ', 0.3)';
             }
+            needToRedraw = false;
         }
-        if (collectedArtifacts >= 4)
+        if (collectedArtifacts >= 2)
         {
             room.artifacts = [];
             ambianceAudio.pause();
+            switch (winStage)
+            {
+                case "emptyRoom":
+                    for (let i = 0; i < 4; i++)
+                        room.walls[i].ImpassibleWall();
+                    winStage = "waitFourSeconds"
+                    break;
+                case "waitFourSeconds":
+                    if (endCounter >= fullSecond * 2.5) winStage = "showRoom"
+                    else endCounter++;
+                    break;
+                case "showRoom":
+                    room.walls[0].changeColor
+                    break;
+            }
         }
         else
             timer.draw();
@@ -189,6 +198,7 @@ function TryAgain()
     collectedArtifacts = 0;
     character.color = "Purple";
     timer = new Timer(10, 0);
+    character = new Character(canvas.width / 2, canvas.height / 2);
 }
 
 animate();

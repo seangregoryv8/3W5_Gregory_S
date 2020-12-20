@@ -65,14 +65,16 @@ class Wall {
         }
         else
         {
+            context.fillRect(this.animationMovement, 0, staticHeight, staticWidth);
+            context.fillRect(0, this.animationMovement, staticWidth, staticHeight);
+            context.fillRect(canvas.width - staticWidth, this.animationMovement, staticWidth, staticHeight);
+            context.fillRect(this.animationMovement, canvas.height - staticWidth, staticHeight, staticWidth);
             this.animation = false;
             respawnPointX = character.x;
             respawnPointY = character.y;
             this.animationMovement = doorToCornerDistance;
             needToRedraw = true;
-            endCounter++;
         }
-        
     }
     AnimateDistance = (playerEdge, doorEdge, wallIndex, oppositePlayerEdge) =>
     {
