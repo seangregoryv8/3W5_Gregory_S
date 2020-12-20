@@ -5,6 +5,7 @@ canvas.width = 700;
 
 let room = chooseNewRoom();
 let ambiancePlaying = false;
+welcome = true;
 let character = new Character(canvas.width / 2, canvas.height / 2);
 let timer = new Timer(10, 0);
 
@@ -68,20 +69,70 @@ function chooseNewRoom()
 let wait = 0, color = 102;
 let tryAgain = false;
 let alpha = 0, change = 0.02;
-let stage = "fadeRed";
-let winStage = "nothing";
+let gameOverStage = "fadeRed";
+let winStage = "nothing", winMusic = true;
+let beginningStage = "firstWait";
 
 let animate = () =>
 {
     requestAnimationFrame(animate);
     context.clearRect(0, 0, canvas.width, canvas.height);
-    if (!welcome)
+    if (welcome)
     {
-
+        document.body.style.backgroundColor = 'rgba(0, 0, 0, 1)';
+        if (winMusic)
+        {
+            currentAudio = new Audio("Sound_effects/Beginning.mp3");
+            currentAudio.play();
+            winMusic = false;
+        }
+        switch(beginningStage)
+        {
+            case "firstWait":
+                if (wait >= fullSecond * 3) { beginningStage = "secondWait"; wait = 0; }
+                else wait++;
+                break;
+            case "secondWait":
+                if (wait >= fullSecond * 3) { beginningStage = "thirdWait"; wait = 0}
+                else
+                {
+                    wait++;
+                    character.draw()
+                }
+                break;
+            case "thirdWait":
+                if (wait >= fullSecond * 3) beginningStage = "fourthWait"
+                else
+                {
+                    wait++;
+                    character.draw()
+                    context.fillStyle = "Yellow";
+                    let deathText = "Cube";
+                    context.font = '70px Courier New';
+                    context.fillText(deathText, canvas.width / 2 - 90, canvas.width / 2 - 50)
+                }
+                break;
+            case "fourthWait":
+                if (wait >= fullSecond * 3) beginningStage = "fourthWait"
+                else
+                {
+                    wait++;
+                    character.draw()
+                    context.fillStyle = "Yellow";
+                    let deathText = "Cube";
+                    context.font = '70px Courier New';
+                    context.fillText(deathText, canvas.width / 2 - 90, canvas.width / 2 - 50)
+                }
+                break;
+        }
+        currentAudio.onended = () =>
+        {
+            welcome = false;
+        }
     }
     else if (gameOver)
     {
-        if (stage != "playAgain")
+        if (gameOverStage != "playAgain")
         {
             ambianceAudio.pause();
             timer.draw();
@@ -95,32 +146,32 @@ let animate = () =>
         }
         context.fillStyle = 'rgba(' + color + ', 0, 0, ' + alpha + ')';
         context.fillRect(0, 0, canvas.width, canvas.height);
-        switch (stage)
+        switch (gameOverStage)
         {
             case "fadeRed":
                 if (alpha >= 1)
-                    stage = "firstWait"
+                    gameOverStage = "firstWait"
                 else
                     alpha += change;
                 break;
             case "firstWait":
-                if (wait >= fullSecond * 1.5) stage = "fadeBlack"
+                if (wait >= fullSecond * 1.5) gameOverStage = "fadeBlack"
                 else wait++;
                 break;
             case "fadeBlack":
                 if (color <= 0) {
-                    stage = "secondWait";
+                    gameOverStage = "secondWait";
                     wait = 0;
                 }
                 else color--;
                 break;
             case "secondWait":
-                if (wait >= fullSecond * 2.5) stage = "yiruma"
+                if (wait >= fullSecond * 2.5) gameOverStage = "yiruma"
                 else wait++;
             case "yiruma":
                 currentAudio = new Audio("Sound_effects/GameOver.mp3")
                 currentAudio.play();
-                stage = "playAgain";
+                gameOverStage = "playAgain";
             case "playAgain":
                 context.clearRect(0, 0, canvas.width / 2, canvas.height / 2);
                 context.fillStyle = "DarkRed";
@@ -184,6 +235,8 @@ let animate = () =>
 
 function TryAgain()
 {
+    welcome = true;
+    winMusic = true;
     color = 102;
     tryAgain = false;
     alpha = 0;
@@ -191,7 +244,7 @@ function TryAgain()
     currentAudio.pause();
     ambianceAudio.play();
     gameOver = false;
-    stage = "fadeRed";
+    gameOverStage = "fadeRed";
     wait = 0;
     needToRedraw = true;
     lives = 3;
