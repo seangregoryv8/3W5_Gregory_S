@@ -93,7 +93,7 @@ let animate = () =>
                 else wait++;
                 break;
             case "secondWait":
-                if (wait >= fullSecond * 3) { beginningStage = "thirdWait"; wait = 0}
+                if (wait >= fullSecond * 6) { beginningStage = "thirdWait"; wait = 0}
                 else
                 {
                     wait++;
@@ -101,33 +101,52 @@ let animate = () =>
                 }
                 break;
             case "thirdWait":
-                if (wait >= fullSecond * 3) beginningStage = "fourthWait"
+                if (wait >= fullSecond * 9) { beginningStage = "fourthWait"; wait = 0}
                 else
                 {
                     wait++;
                     character.draw()
                     context.fillStyle = "Yellow";
-                    let deathText = "Cube";
+                    let introText = "Cube";
                     context.font = '70px Courier New';
-                    context.fillText(deathText, canvas.width / 2 - 90, canvas.width / 2 - 50)
+                    context.fillText(introText, canvas.width / 2 - 90, canvas.width / 2 - 50)
                 }
                 break;
             case "fourthWait":
-                if (wait >= fullSecond * 3) beginningStage = "fourthWait"
-                else
+                wait++;
+                console.log(wait);
+                if (wait <= fullSecond * 3)
                 {
-                    wait++;
-                    character.draw()
-                    context.fillStyle = "Yellow";
-                    let deathText = "Cube";
-                    context.font = '70px Courier New';
-                    context.fillText(deathText, canvas.width / 2 - 90, canvas.width / 2 - 50)
+                    let instructions = "WASD to move"
+                    context.font = '50px Courier New';
+                    context.fillText(instructions, 200, canvas.width / 2 + 70)
+                }
+                else if (wait <= fullSecond * 6)
+                {
+                    instructions = "Collect artifacts to escape"
+                    context.font = '30px Courier New';
+                    context.fillText(instructions, 100, canvas.width / 2 + 70)
+                }
+                else if (wait <= fullSecond * 9)
+                {
+                    instructions = "Avoid the traps"
+                    context.font = '40px Courier New';
+                    context.fillText(instructions, 250, canvas.width / 2 + 70)
+                }
+                else if (wait <= fullSecond * 15)
+                {
+                    context.fillStyle = "Red";
+                    instructions = "Watch out for"
+                    context.font = '40px Courier New';
+                    context.fillText(instructions, 100, canvas.width / 2 + 70)
                 }
                 break;
         }
         currentAudio.onended = () =>
         {
+            wait = 0;
             welcome = false;
+            beginningStage = "firstWait";
         }
     }
     else if (gameOver)
