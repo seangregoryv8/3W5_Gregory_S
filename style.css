@@ -15,7 +15,7 @@
     margin: 30px;
 }
 #mini { margin-left: 10px; }
-#text, #gameOver { text-align: center; }
+#text, #text2, #gameOver { text-align: center; }
 #tryAgain
 {
     visibility: hidden;

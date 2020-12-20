@@ -72,12 +72,13 @@ let alpha = 0, change = 0.02;
 let gameOverStage = "fadeRed";
 let winStage = "nothing", winMusic = true;
 let beginningStage = "firstWait";
+let endingMusic = true, endingStart = true, endingR = 0, endingG = 0, endingB = 0;
 
 let animate = () =>
 {
     requestAnimationFrame(animate);
     context.clearRect(0, 0, canvas.width, canvas.height);
-    if (welcome)
+    if (!welcome)
     {
         document.body.style.backgroundColor = 'rgba(0, 0, 0, 1)';
         if (winMusic)
@@ -117,9 +118,9 @@ let animate = () =>
                 console.log(wait);
                 if (wait <= fullSecond * 3)
                 {
-                    let instructions = "WASD to move"
+                    let instructions = "Arrow Keys to move"
                     context.font = '50px Courier New';
-                    context.fillText(instructions, 200, canvas.width / 2 + 70)
+                    context.fillText(instructions, 100, canvas.width / 2 + 70)
                 }
                 else if (wait <= fullSecond * 6)
                 {
@@ -133,7 +134,7 @@ let animate = () =>
                     context.font = '40px Courier New';
                     context.fillText(instructions, 250, canvas.width / 2 + 70)
                 }
-                else if (wait <= fullSecond * 15)
+                else if (wait <= fullSecond * 12)
                 {
                     context.fillStyle = "Red";
                     instructions = "Watch out for"
@@ -210,11 +211,49 @@ let animate = () =>
         }
         if (needToRedraw)
         {
-            if (collectedArtifacts >= 2)
+            if (collectedArtifacts >= 21)
             {
+                character.color = "rgba(0, 0, 0, 0)";
+                document.getElementById("time").innerHTML = "";
+                let timeTaken = (600 - (timer.minutes * 60 + timer.seconds))
+                let totalTime = 0;
+                while (timeTaken > 60)
+                {
+                    totalTime++;
+                    timeTaken -= 60;
+                }
+                totalTime = totalTime + "m " + timeTaken + "s"
+                document.getElementById("endTime").innerHTML = "Time taken: " + totalTime
+
+                wait++;
+                if (wait >= fullSecond * 12 && endingB <= colorMax)
+                {
+                    endingB += 3;
+                    endingG += 3;
+                    endingR += 3;
+                }
+                if (endingB >= colorMax)
+                {
+                    context.fillStyle = "Black";
+                    let introText = "Cube";
+                    context.font = '70px Courier New';
+                    context.fillText(introText, canvas.width / 2 - 90, canvas.width / 2 - 50)
+                    context.fillStyle = "Black";
+                    let introText2 = "Beaten";
+                    context.font = '90px Courier New';
+                    context.fillText(introText2, 190, canvas.width / 2 + 50)
+                }
                 room = new Room("End");
-                document.body.style.backgroundColor = 'rgba(' + room.r + ', ' + room.g + ', ' + room.b + ', 0.3)';
+                for (let i = 0; i < 4; i++)
+                    room.walls[i].ImpassibleWall();
                 winStage = "emptyRoom";
+                document.body.style.backgroundColor = 'rgba(' + endingR + ', ' + endingG + ', ' + endingB + ', 1)';
+                if (endingMusic)
+                {
+                    currentAudio = new Audio('Sound_effects/Ending.mp3');
+                    currentAudio.play();
+                    endingMusic = false;
+                }
             }
             else
             {
@@ -224,25 +263,10 @@ let animate = () =>
             }
             needToRedraw = false;
         }
-        if (collectedArtifacts >= 2)
+        if (collectedArtifacts >= 21)
         {
             room.artifacts = [];
             ambianceAudio.pause();
-            switch (winStage)
-            {
-                case "emptyRoom":
-                    for (let i = 0; i < 4; i++)
-                        room.walls[i].ImpassibleWall();
-                    winStage = "waitFourSeconds"
-                    break;
-                case "waitFourSeconds":
-                    if (endCounter >= fullSecond * 2.5) winStage = "showRoom"
-                    else endCounter++;
-                    break;
-                case "showRoom":
-                    room.walls[0].changeColor
-                    break;
-            }
         }
         else
             timer.draw();
@@ -254,18 +278,15 @@ let animate = () =>
 
 function TryAgain()
 {
-    welcome = true;
-    winMusic = true;
+    welcome = winMusic = endingMusic = needToRedraw = true;
     color = 102;
-    tryAgain = false;
+    tryAgain = gameOver = false;
     alpha = 0;
     document.getElementById("tryAgain").style.visibility = "hidden";
     currentAudio.pause();
     ambianceAudio.play();
-    gameOver = false;
     gameOverStage = "fadeRed";
     wait = 0;
-    needToRedraw = true;
     lives = 3;
     collectedArtifacts = 0;
     character.color = "Purple";
