@@ -78,7 +78,7 @@ let animate = () =>
 {
     requestAnimationFrame(animate);
     context.clearRect(0, 0, canvas.width, canvas.height);
-    if (!welcome)
+    if (welcome)
     {
         document.body.style.backgroundColor = 'rgba(0, 0, 0, 1)';
         if (winMusic)
